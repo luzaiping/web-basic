@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style type="text/css">
+
+		html, body {
+			height: 100%;
+		}
+		#container {
+		  position: relative;
+		  height: 100%;
+		}
+		
+		#parent {
+		  width: 100%;
+		}
+
+		#dialog {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  width: 200px;
+		  height: 100px;
+		  z-index: 3;
+		  margin: auto;
+		}
+
+		#overlay {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  width: 100%;
+		  heigth: 100%;
+		  z-index: 2;
+		  background-color: rgba(0, 0, 0, 0.2);
+		}
+	</style>
+
+</head>
+<body>
+
+  <div id='container'>
+    <div>content right here</div>
+
+    <div id='dialog'>
+      dialog ......
+    </div>
+    
+    <div id='overlay'> </div>
+    </div>
+<script type=text/javascript src=js/require.js data-main='js/app'></script>
+</body>
+</html>

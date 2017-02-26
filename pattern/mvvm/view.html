@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model-View-ViewModel (MVVM) Example</title>
+</head>
+<body>
+    <form data-submit='addEmail'>
+        <input type='text' placeholder='New Email Address'/>
+        <button type='Submit'>Add</button>
+    </form>
+    <ul data-loop>
+        <li>
+            <span data-text></span>
+            <button data-click='removeEmail'>Remove</button>
+        </li>
+    </ul>
+    <div data-number></div>
+    <script src="../observer/observer.js"></script>
+    <script src="../mvc/Model.js"></script>
+    <script src="ViewModel.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
