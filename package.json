@@ -1,0 +1,23 @@
+{
+  "name": "js-basic",
+  "version": "1.0.0",
+  "description": "something",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luzaiping/jsBasic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luzaiping/jsBasic/issues"
+  },
+  "homepage": "https://github.com/luzaiping/jsBasic#readme",
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^6.10.3"
+  }
+}

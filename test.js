@@ -1,47 +1,49 @@
 
 function importJavaScript (url, callback) {
 
-    var scriptNode = document.createElement('script');
+    var scriptNode = document.createElement('script')
 
     if(typeof callback === 'function') {
         if(RCM.Platform.isIE()) {
             scriptNode.onreadystatechange = function() {
-                var readyState = scriptNode.readyState;
+                var readyState = scriptNode.readyState
                 if(readyState === 'complete' || readyState === 'loaded') {
-                    scriptNode.onreadystatechange = null;
-                    callback();
+                    scriptNode.onreadystatechange = null
+                    callback()
                 }
             }
         } else {
-            scriptNode.onload = callback;
-            scriptNode.onerror = callback;
+            scriptNode.onload = callback
+            scriptNode.onerror = callback
         }
     }
 
     scriptNode.src = url;
-    scriptNode.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(scriptNode);
+    scriptNode.type = 'text/javascript'
+    document.getElementsByTagName('head')[0].appendChild(scriptNode)
 }
 
 function A() {
-    this.name = 'Felix';
+    this.name = 'Felix'
 }
 
-A.prototype.age = 10;
+A.prototype.age = 10
 
 function extend(parentConstructor, childConstructor) {
     function fn() {};
-    fn.prototype = parentConstructor.prototype;
-    childConstructor.prototype = new fn();
-    childConstructor.prototype.constructor = childConstructor;
+    fn.prototype = parentConstructor.prototype
+    childConstructor.prototype = new fn()
+    childConstructor.prototype.constructor = childConstructor
     childConstructor.superType = parentConstructor;
 }
 
 function B() {
-    this.name = 'Sandy';
+    this.name = 'Sandy'
 }
 
-extend(A, B);
+extend(A, B)
 
-var b = new B();
-console.log(b.name, b.age);
+var b = new B()
+console.log(b.name, b.age)
+
+var str = "";
