@@ -1,6 +1,6 @@
 {
     "globals": {
-
+        
      },
     "env": {
         "browser": true,
@@ -12,10 +12,10 @@
         "ecmaFeatures": {}
     },
     "rules": {
-        "indent": ["error", 4],
-        "quotes": ["error", "single"],
-        "semi": ["error", "never"],
-        "no-unused-vars" : "warn"
+        "indent": [0, 4],
+        "quotes": [1, "single"],
+        "semi": [1, "never"],
+        "no-unused-vars" : 2
     }
 
 }

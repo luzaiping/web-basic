@@ -3,29 +3,29 @@
  */
 
 function PromiseSimulation(fn) {
-    var state = 'pending';
-    var value;
-    var deferred = null;
+    var state = 'pending'
+    var value
+    var deferred = null
 
     function resolve(newValue) {
         if(newValue && typeof newValue.then === 'function') {
-            newValue.then(resolve);
-            return;
+            newValue.then(resolve)
+            return
         }
-        value = newValue;
-        state = 'resolved';
-        deferred && handle(deferred);
+        value = newValue
+        state = 'resolved'
+        deferred && handle(deferred)
     }
 
     function handle(handlerObj) {
         if(state === 'pending') {
-            deferred = handlerObj;
-            return;
+            deferred = handlerObj
+            return
         }
 
         if(!handlerObj.onResolved) {
-            handlerObj.resolve(value);
-            return;
+            handlerObj.resolve(value)
+            return
         }
 
         var ret = handlerObj.onResolved(value);
@@ -37,15 +37,15 @@ function PromiseSimulation(fn) {
             handle({
                 onResolved: onResolved,
                 resolve: resolve
-            });
-        });
-    };
+            })
+        })
+    }
 
     fn(resolve);
 }
 
 var promise = new PromiseSimulation(function (resolve) {
-    resolve(50);
+    resolve(50)
 });
 
 promise.then(function (firstResult) {
