@@ -1,0 +1,3 @@
+# ignore folder except build/closure.js file
+test.js
+test/*.js

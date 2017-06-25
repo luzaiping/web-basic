@@ -43,7 +43,7 @@ let promiseUsage = () => {
             promise.then(function(result) {
                 expect(result).to.equal(1)
                 done()
-            }, function(err) {
+            }).catch(function(err) {
                 done(err)
             })
         })

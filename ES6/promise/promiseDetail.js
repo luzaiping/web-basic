@@ -5,7 +5,7 @@
 function PromiseSimulation(fn) {
     var state = 'pending'
     var value
-    var deferred = null;
+    var deferred = null
 
     function resolve(newValue) {
         if(newValue && typeof newValue.then === 'function') {
@@ -28,8 +28,8 @@ function PromiseSimulation(fn) {
             return
         }
 
-        var ret = handlerObj.onResolved(value);
-        handlerObj.resolve(ret);
+        var ret = handlerObj.onResolved(value)
+        handlerObj.resolve(ret)
     }
 
     this.then = function(onResolved) {
@@ -40,22 +40,22 @@ function PromiseSimulation(fn) {
             })
         })
     }
-    fn(resolve);
+    fn(resolve)
 }
 
 var promise = new PromiseSimulation(function (resolve) {
     resolve(50)
-});
+})
 
 promise.then(function (firstResult) {
-    console.log('first result: ' + firstResult);
-    return doSomethingElse(firstResult);
+    console.log('first result: ' + firstResult)
+    return doSomethingElse(firstResult)
 }).then(function (secondResult) {
-    console.log('second result: ' + secondResult);
-});
+    console.log('second result: ' + secondResult)
+})
 
 function doSomethingElse(value) {
     return new PromiseSimulation(function (resolve) {
-        resolve("did something else with " + value);
-    });
+        resolve('did something else with ' + value)
+    })
 }

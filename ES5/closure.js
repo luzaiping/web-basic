@@ -16,6 +16,8 @@ console.log(closure.bar(), closure.baz());*/
 
 var a = [];
 
+var str = "something";
+
 for(var i=0; i<5; i++) {
 	a[i] = function(i) {
         return function() {

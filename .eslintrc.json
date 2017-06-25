@@ -1,21 +1,37 @@
 {
     "globals": {
-        
+        "React": false
      },
     "env": {
         "browser": true,
-        "node": true
+        "node": true,
+        "es6": true // this will sets the ecmaVersion parser option to 6 in parserOptions
     },
+    // "parser": "babel-eslint", // 指定parser，一般用默认的即可
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
-        "ecmaFeatures": {}
+        "ecmaFeatures": {
+            "jsx":true,
+            "globalReturn": false,
+            "experimentalObjectRestSpread": true
+        }
     },
     "rules": {
-        "indent": [0, 4],
+        "indent": [1, 4],
         "quotes": [1, "single"],
         "semi": [1, "never"],
         "no-unused-vars" : 2
-    }
+    },
+    "ecmaFeatures": {
 
+    },
+    "extends": "eslint:recommended", // 继承 shareable config. "extends": ["eslint:recommended", "plugin:react/recommended"]
+    "plugins": [ // 全局安装的ESLint 只能使用 全局安装的 plugin；局部安装的ESLint 可以使用全局也可以使用局部的 plugin
+        // "react" '' 指定插件名称，名称前面省略了eslint-plugin-，所以这个完整名称其实是 eslint-plugin-react，用全名或省略后的名称，都是可以，使用前需npm install对应插件
+    ],
+    "root": false, // 设置为true，当lint当前目录的文件时，eslint只会用当前目录的config，而不会继续往上级目录查找config，即当前目录就是root
+    "settings": {
+        "sharedData": "hello" // 设置shared setting，this can be used to every rule that will be executed.
+    }
 }
