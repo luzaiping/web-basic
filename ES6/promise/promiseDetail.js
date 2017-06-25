@@ -5,7 +5,7 @@
 function PromiseSimulation(fn) {
     var state = 'pending'
     var value
-    var deferred = null
+    var deferred = null;
 
     function resolve(newValue) {
         if(newValue && typeof newValue.then === 'function') {
@@ -40,7 +40,6 @@ function PromiseSimulation(fn) {
             })
         })
     }
-
     fn(resolve);
 }
 
