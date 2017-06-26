@@ -1,4 +1,3 @@
-
 let assertUsage = () => {
     let assert = require('chai').assert
         foo = 'bar'
@@ -24,12 +23,12 @@ let assertUsage = () => {
 
 let expectUsage = () => {
     let expect = require('chai').expect
-        foo = 'bar'
-        beverages = {
+    let foo = 'bar'
+    let beverages = {
             'tea': ['chai', 'mocha', 'oolong']
         }
-        goodFn = () => {}
-        deepObj = { foo: {bar: { baz: 'quux' }}}
+    let goodFn = () => {}
+    let deepObj = { foo: {bar: { baz: 'quux' }}}
     describe('expect chainable style', function() {
         it('foo String', function() {
             expect(foo).to.be.a('string').to.equal('bar').to.have.lengthOf(3)

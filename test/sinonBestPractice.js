@@ -8,7 +8,7 @@ let Database = {
 function setupNewUser(info, callback) {
     var user = {
       name: info.name,
-      nameLowercase: info.name.toLowerCase();
+      nameLowercase: info.name.toLowerCase()
     }
 
     try {
