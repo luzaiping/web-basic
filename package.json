@@ -4,7 +4,7 @@
   "description": "something",
   "main": "test.js",
   "scripts": {
-    "test:mocha": "mocha --compilers js:babel-core/register test/**/*.js"
+    "test:mocha": "mocha --compilers js:babel-core/register --recursive"
   },
   "repository": {
     "type": "git",
