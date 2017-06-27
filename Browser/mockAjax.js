@@ -3,7 +3,7 @@ var Ajax = {
         setTimeout(function() {
             let result = 'asyn result'
             callback.call(this, result)
-        }, 1000)
+        }, 100)
     }
 }
 

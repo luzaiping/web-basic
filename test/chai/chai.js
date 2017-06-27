@@ -1,11 +1,13 @@
-let assertUsage = () => {
-    let assert = require('chai').assert
-        foo = 'bar'
+let chai = require('chai')
+
+let assertCase = () => {
+    let assert = chai.assert,
+        foo = 'bar',
         beverages = {
             teas: ['chai', 'mocha', 'oolong']
         }
 
-    describe('something', function () {
+    describe('chai assert case', function () {
         it('should be a string type', function() {
             assert.typeOf(foo, 'string')
         })
@@ -21,10 +23,10 @@ let assertUsage = () => {
     })
 }
 
-let expectUsage = () => {
-    let expect = require('chai').expect
-    let foo = 'bar'
-    let beverages = {
+let expectCase = () => {
+    let expect = chai.expect,
+        foo = 'bar',
+        beverages = {
             'tea': ['chai', 'mocha', 'oolong']
         }
     let goodFn = () => {}
@@ -46,42 +48,30 @@ let expectUsage = () => {
     })
 }
 
-let shouldUsage = () => {
-    require('chai').should()
-    // chai.should()
+let shouldCase = () => {
+    chai.should()
 
-    describe('Array', function() {
-        describe('#indexOf()', function() {
-            it('should return -1 when the value is not present', function() {
-                [1, 2, 3].indexOf(5).should.equal(-1);
-                [1, 2, 3].indexOf(0).should.equal(-1)
-            })
+    describe('chai should chainable style', function() {
+        it('array should return -1 when the value is not present', function() {
+            [1, 2, 3].indexOf(5).should.equal(-1);
+            [1, 2, 3].indexOf(0).should.equal(-1)
         })
     })
 }
 
-// assertUsage()
-
-expectUsage()
-
-// shouldUsage()
-
-describe('hook', function () {
-    before(function() {
-        // runs before all tests in this block
+let chaiAsPromisedCase = () => {
+    let chaiAsPromised = require('chai-as-promised')
+    let expect = chai.expect
+    chai.use(chaiAsPromised)
+    describe('chai-as-promised', function() {
+        it('resolve promise', function() {
+            return expect(Promise.resolve( 2 + 2 )).to.eventually.equal(4)
+        })
     })
+}
 
-    after(function() {
-        // runs after all tests in this block
-    })
+assertCase()
 
-    beforeEach(function() {
-        // runs before each test in the block
-    })
+expectCase()
 
-    afterEach(function() {
-        // runs after each test in the block
-    })
-
-    // test cases
-})
+shouldCase()
