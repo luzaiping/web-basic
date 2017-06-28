@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            body { padding: 30px }
+            form { display: block; margin: 20px auto; background: #eee; border-radius: 10px; padding: 15px }
+            .progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+            .bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+            .percent { position:absolute; display:inline-block; top:3px; left:48%; }
+        </style>
+
+    </head>
+
+    <body>
+        <form action="#" method="post" enctype="multipart/form-data">
+            <input type="file" name="myfile[]" multiple id='file'><br>
+            <input type="submit" value="Upload File to Server" id='submit'>
+        </form>
+
+        <div class="progress">
+            <div class="bar" id='bar'></div >
+            <div class="percent" id='percent'>0%</div >
+        </div>
+
+        <div id="status"></div>
+
+        <script type='text/javascript' src='./uploadFile.js'></script>
+    </body>
+</html>
