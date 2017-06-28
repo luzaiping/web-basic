@@ -12,18 +12,79 @@
     </head>
 
     <body>
-        <form action="#" method="post" enctype="multipart/form-data">
-            <input type="file" name="myfile[]" multiple id='file'><br>
+        <div style = 'margin-bottom: 10px'>
+            <input type="file" name="myfile[]" id='file'><br>
             <input type="submit" value="Upload File to Server" id='submit'>
-        </form>
+        </div>
 
         <div class="progress">
             <div class="bar" id='bar'></div >
             <div class="percent" id='percent'>0%</div >
         </div>
 
-        <div id="status"></div>
+        <div id="message"></div>
 
-        <script type='text/javascript' src='./uploadFile.js'></script>
+        <script src="./upload.js"></script>
+        <!--
+        <script>
+            var submitEle = document.getElementById('submit')
+            var status = document.getElementById('status')
+            var bar = document.getElementById('bar')
+            var percent = document.getElementById('percent')
+
+            submitEle.addEventListener('click', uploadFile, false)
+
+            function uploadFile() {
+
+                let xhr = new XMLHttpRequest()
+                
+                let url = 'http://malsup.com/jquery/form/file-echo2.php'
+                xhr.open('post', url , true)
+
+                xhr.onload = onRequestEnd
+
+                xhr.onerror = onError
+
+                xhr.upload.onprogress = handleProgress
+
+                xhr.upload.onloadstart = uploadStart
+
+                xhr.send(createFormData())
+
+                function createFormData() {
+                    var fileObj = document.getElementById('file').files[0]
+                    let data = new FormData()
+                    data.append('myfile[]', fileObj)
+                    return data
+                }
+            }
+
+            function handleProgress(event) {
+                let { total, loaded, lengthComputable } = event
+
+                console.log( `total: ${total}, loaded: ${loaded}, lengthComputable: ${lengthComputable}`)
+
+                if (lengthComputable) {
+                    let displayValue = Math.round(loaded / total * 100) + "%"
+                    bar.style.width = displayValue
+                    percent.innerHTML = displayValue
+                }
+            }
+
+            function uploadStart(event) {
+                bar.style.width = '0%'
+                percent.innerHTML = '0%'
+                status.innerHTML = ''
+            }
+
+            function onRequestEnd (event) {
+                status.innerHTML = event.target.responseText
+            }
+
+            function onError(event) {
+                status.innerHTML = '上传失败'
+            }
+
+        </script>-->
     </body>
 </html>
