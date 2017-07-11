@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}\\functional\\functional-light\\reverseArgs.js"
+            "program": "${workspaceRoot}\\functional\\functional-light\\chapter3\\particalHelper.js"
         }
     ]
 }
