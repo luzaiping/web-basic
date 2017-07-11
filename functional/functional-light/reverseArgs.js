@@ -18,6 +18,4 @@ console.log(testArgsReversed(1, 2, 3))
 
 let cache = {}
 
-
-
 module.exports = { reverseArgs }

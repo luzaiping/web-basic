@@ -1,15 +1,13 @@
 
 let typeUtils = (function IEEF() {
-    const toString = Object.prototype.toString
-    let typeArray = ['Object', 'String', 'Number', 'Null', 'Undefined', 'Date', 'Function', 'Array', 'Promise', 'Symbol']
     let result = {}
+    let toString = Object.prototype.toString
+    let types = [ 'Number', 'String', 'Boolean', 'Function', 'Array', 'RegExp', 'Date', 'Object' ]
 
-    for (let type of typeArray) {
-        result[`is${type}`] = function(value) {
-            return toString.call(value) === `[object ${type}]`
-        }
+    for( let type of types ) {
+        result[ `is${type}` ] = (checkValue) => toString.call(checkValue) === `[object ${type}]`
     }
-    
     return result
 })()
+
 module.exports = typeUtils
