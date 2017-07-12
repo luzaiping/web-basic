@@ -1,32 +1,49 @@
-function testArity(x, y , z) {
-    console.log(`testArity.length: ${testArity.length}`)  // the length of paramenter, in this case it will be 3
-    console.log(`arguments.length: ${arguments.length}`) // actual argument passed into funciton, it will be different.
+function partical(fn, ...presetArgs) {
+    return function(...laterArgs) {
+        return fn(...presetArgs, ...laterArgs)
+    }
 }
 
-testArity(1, 2, 3, 4)
-testArity(1, 2, 3)
-testArity(1, 2)
-testArity(1)
+function strictCurry(fn, arity = fn.length) {
+    return ( function nextCurried(prevArgs) {
+        return function curryed(nextArgs) {
+            let args = prevArgs.concat([nextArgs])
 
-
-function foo(x,y = 2) {
-	// ..
+            if (args.length >= arity) {
+                return fn(...args)
+            } else {
+                return nextCurried(args)
+            }
+        } 
+    })([])
 }
 
-function bar(x,...args) {
-	// ..
+function looseCurry(fn, arity = fn.length) {
+    return ( function nextCurried(prevArgs) {
+        return function curryed(...nextArgs) {
+            let args = prevArgs.concat(nextArgs)
+
+            if (args.length >= arity) {
+                return fn(...args)
+            } else {
+                return nextCurried(args)
+            }
+        } 
+    })([])
 }
 
-function baz( {a,b} ) {
-	// ..
+function sum(...args) {
+    let count = 0
+    for (let arg of args) {
+        count += arg
+    }
+    return count
 }
 
-console.log(foo.length)
-console.log(bar.length)
-console.log(baz.length)
+let sumPartical = partical(sum, 1, 2, 3, 4)
+let sumCurried = strictCurry(sum, 5)
+let looseCurried = looseCurry(sum, 5)
 
-function testDefaultParameterIsRequired(x = require('./require')) {
-    console.log(x)
-}
-
-testDefaultParameterIsRequired()
+console.log(sumPartical(5, 6, 7))
+console.log(sumCurried(1)(2)(3)(4)(5))
+console.log(looseCurried(1)(2, 3)(3, 4, 5, 7, 8))
