@@ -1,5 +1,5 @@
 const map = new Map([
-	[1, 'one'],
-	[2, 'two'],
-	[3, 'one']
+    [1, 'one'],
+    [2, 'two'],
+    [3, 'one']
 ])

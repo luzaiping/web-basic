@@ -12,7 +12,7 @@ function curry(fn, arity = fn.length) {
 }
 
 function looseCurry(fn, arity = fn.length) {
-    return (function nextCurried(prevArgs) {// prevArgs 是一个数组
+    return (function nextCurried(prevArgs) {// prevArgs 是一个数组``
         return function curried(...nextArgs) {// nextArgs是数组，可以是多个参数
             let args = prevArgs.concat(nextArgs)
             if (args.length >= arity) {
@@ -26,7 +26,7 @@ function looseCurry(fn, arity = fn.length) {
 
 function sum(...args) {
     let count = 0
-    for ( let arg of args) {
+    for (let arg of args) {
         count += arg
     }
     return count
@@ -34,11 +34,12 @@ function sum(...args) {
 
 let curriedSum = curry(sum, 5)
 console.log(curriedSum(1)(2)(3)(4)(5))
-console.log(curriedSum(1)(2,2)(3,3,3)(4,4,4,4)(5,5,5,5,5))
+console.log(curriedSum(1)(2, 2)(3, 3, 3)(4, 4, 4, 4)(5, 5, 5, 5, 5))
 
 let looseCurriedSum = looseCurry(sum, 5)
-console.log(looseCurriedSum(1)(2,2,3)(3,3,4))
+console.log(looseCurriedSum(1)(2, 2, 3)(3, 3, 4))
 
 module.exports = {
-    curry
+    curry,
+    looseCurry
 }
