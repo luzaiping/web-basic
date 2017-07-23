@@ -43,3 +43,15 @@ module.exports = {
     curry,
     looseCurry
 }
+
+var adder = looseCurry(sum, 2)
+let arr = [1,2,3]
+
+arr.map(function(value, index, arr) {
+    console.log(sum(3, value))
+    console.log(sum(3, value, index, arr))
+    // sum(3, value, index, arr)
+})
+
+// console.log(adder(1,2,3))
+console.log([1,2,3].map(adder(3)))
