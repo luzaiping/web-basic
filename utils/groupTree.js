@@ -1,7 +1,40 @@
-export function getParentKeyPath(groups, targetParentId) {
+function getKeyPath(groups, targetId) {
     let path = ''
+    let orginalPath = ''
+    let done = false
 
-    groups.some(function getPath(item, index) {
+    groups.forEach(function(item, index) {
+        path = orginalPath = `${index}`
+        traverse(item, index, orginalPath)
+    })
+
+    let result = done ? path : ''
+    console.log(result)
+    return result
+
+    function traverse(item, index, path) {
+        if (done) return
+
+        let { id, childNode } = item
+
+        // 找到目标id，设置done为true
+        if (id === targetId) {
+            done = true
+        } else {
+            // 当前节点没有找到，有子节点，添加子节点路径，同时递归子节点
+            if (childNode.length > 0) {
+                path = `${path}.childNode` // 先添加childNode
+                childNode.forEach(function(item, index) {
+                    path = `${path}.${index}` // 添加当前循环的子节点索引
+                    traverse(item, index, path) // 递归子节点
+                })
+            } else { // 最里面的子节点还是没有找到targetId，则将该分支的path还原成最初的path
+                path = orginalPath
+            }
+        }
+    }
+
+    /* groups.some(function getPath(item, index) {
         let { id, childNode } = item
 
         path = path ? `${path}.${index}` : `${index}`
@@ -18,7 +51,7 @@ export function getParentKeyPath(groups, targetParentId) {
         }
         return false
     })
-    return path
+    return path */
 }
 
 let groups = [
@@ -87,7 +120,14 @@ let group2 = [
                         "name": "保洁部2",
                         "parentId": "1-2",
                         "id": "1-2-2",
-                        "childNode": []
+                        "childNode": [
+                            {
+                                name: '保洁部222',
+                                parentId: '1-2-2',
+                                id: '1-2-2-1',
+                                childNode: []
+                            }
+                        ]
                     }
                 ]
             },
@@ -139,3 +179,4 @@ let group2 = [
     }
 ]
 
+getKeyPath(group2, '1')
