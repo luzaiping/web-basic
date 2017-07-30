@@ -24,34 +24,7 @@ function looseCurry(fn, arity = fn.length) {
     })([])
 }
 
-function sum(...args) {
-    let count = 0
-    for (let arg of args) {
-        count += arg
-    }
-    return count
-}
-
-let curriedSum = curry(sum, 5)
-console.log(curriedSum(1)(2)(3)(4)(5))
-console.log(curriedSum(1)(2, 2)(3, 3, 3)(4, 4, 4, 4)(5, 5, 5, 5, 5))
-
-let looseCurriedSum = looseCurry(sum, 5)
-console.log(looseCurriedSum(1)(2, 2, 3)(3, 3, 4))
-
 module.exports = {
     curry,
     looseCurry
 }
-
-var adder = looseCurry(sum, 2)
-let arr = [1,2,3]
-
-arr.map(function(value, index, arr) {
-    console.log(sum(3, value))
-    console.log(sum(3, value, index, arr))
-    // sum(3, value, index, arr)
-})
-
-// console.log(adder(1,2,3))
-console.log([1,2,3].map(adder(3)))
