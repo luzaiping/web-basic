@@ -5,13 +5,4 @@ function reverseArgs(fn) {
     }
 }
 
-function test(x, y, z) {
-    return (x + y) * z
-}
-
-console.log(test(1, 2, 3))
-
-let testArgsReversed = reverseArgs(test)
-console.log(testArgsReversed(1, 2, 3))
-
 module.exports = reverseArgs
