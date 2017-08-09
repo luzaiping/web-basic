@@ -1,51 +1,44 @@
-function makePath(tree, target) {
+/**
+ * 根据目标节点id获取对应的path，path要求从根节点一直到目标节点：parent.childNode.0  类似这样的结构
+ * @param {*} groups 
+ * @param {*} targetId 
+ */
+function getKeyPath(groups, targetId) {
+    let path = {}
+    let done = false
+    let result = ''
 
-  var result,
-      done = false,
-      path = {};
+    groups.forEach(function (item, index) {
+        path[index] = [index]
+        traverse(item, index)
+    })
 
-  function traverse(tree, target, root) {
-    var keys = Object.keys(tree);
-    forEach(keys, function(key) {
-      if (!done) {
-        if (key === target) {
-          //if we found our target push it to the path
-          path[root].push(target);
-          //set result to the completed path
-          result = path[root];
-          //set done to true to exit the search
-          done = true;
-          return;
+    return result
+
+    function traverse(item, rootKey) {
+        if (done) return
+
+        let { id, childNode = [] } = item
+
+        // 找到目标id，设置done为true
+        if (id === targetId) {
+            done = true
+            result = path[rootKey].join('.')
         } else {
-          //if the node does not match we need to check for children
-          var newRoot = tree[key];
-          if(Object.keys(newRoot).length > 0) {
-            //if node has children, push the key into our path and check the children for our target
-            path[root].push(key);
-            return traverse(tree[key], target, root);
-          }
-          //no children means our search of this branch is over
-          return;
+            // 当前节点没有找到，有子节点，递归子节点, 同时添加子节点路径
+            if (childNode.length > 0) {
+                childNode.forEach(function (item, index) {
+                    // 需先判断同级的前面节点是否已经找到，如果找到，就不往下继续了
+                    if (!done) {
+                        path[rootKey].push(`childNode.${index}`)
+                        traverse(item, rootKey) // 递归子节点
+                    }
+                })
+            }
         }
-      }
-    });
-    //if we leave our for loop but we are not done that means we failed to find our target
-    //in this branch, as a result we need to pop each node out of our path before we return
-    if (!done){
-      path[root].pop();
+        // 如果当前节点没有找到targetId，则弹出之前添加的keypath
+        if (!done) {
+            path[rootKey].pop()
+        }
     }
-    return;
-  };
-
-  //set an array of the root nodes of our product tree. These are super-categories that are
-  //not saved in the item schema, possibly representing types of items, i.e. different schemas.
-  var roots = Object.keys(tree);
-  roots.forEach(function (root) {
-    path[root] = [];
-    //traverse our tree, going through each root node until the target leaf is found in the
-    //tree defined by that root node.
-    traverse(tree[root], target, root);
-  });
-
-  return result;
-};
+}

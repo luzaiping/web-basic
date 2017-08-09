@@ -1,18 +1,17 @@
 function getKeyPath(groups, targetId) {
-    let path = ''
-    let orginalPath = ''
+    let path = {}
     let done = false
+    let result = ''
 
     groups.forEach(function(item, index) {
-        path = orginalPath = `${index}`
-        traverse(item, index, orginalPath)
+        path[index] = [index]
+        traverse(item, index)
     })
 
-    let result = done ? path : ''
     console.log(result)
     return result
 
-    function traverse(item, index, path) {
+    function traverse(item, rootKey) {
         if (done) return
 
         let { id, childNode } = item
@@ -20,38 +19,39 @@ function getKeyPath(groups, targetId) {
         // 找到目标id，设置done为true
         if (id === targetId) {
             done = true
+            result = path[rootKey].join('.')
         } else {
-            // 当前节点没有找到，有子节点，添加子节点路径，同时递归子节点
+            // 当前节点没有找到，有子节点，递归子节点, 同时添加子节点路径
             if (childNode.length > 0) {
-                path = `${path}.childNode` // 先添加childNode
+                // path[rootKey].push('childNode')
                 childNode.forEach(function(item, index) {
-                    path = `${path}.${index}` // 添加当前循环的子节点索引
-                    traverse(item, index, path) // 递归子节点
+                    if (!done) {
+                        path[rootKey].push(`childNode.${index}`)
+                        traverse(item, rootKey) // 递归子节点
+                    }
                 })
-            } else { // 最里面的子节点还是没有找到targetId，则将该分支的path还原成最初的path
-                path = orginalPath
             }
         }
-    }
 
-    /* groups.some(function getPath(item, index) {
-        let { id, childNode } = item
-
-        path = path ? `${path}.${index}` : `${index}`
-
-        if (id === targetParentId) return true
-
-        let hasChildren = childNode.length > 0
-        if (hasChildren) {
-            path = `${path}.childNode`
-            let result = childNode.some(getPath)
-            if (result) return result
-        } else {
-            path = ''
+        if (!done) {
+            path[rootKey].pop()
         }
-        return false
+    }
+}
+
+function getGroup(groups, targetId) {
+    let result
+    groups.some(function traverse(group) {
+        let { id, childNode = [] } = group
+        if (id === targetId) {
+            result = group
+            console.log('11111')
+            return true
+        }
+        console.log('0000000')
+        return childNode.some(traverse)
     })
-    return path */
+    return result || {}
 }
 
 let groups = [
@@ -179,4 +179,8 @@ let group2 = [
     }
 ]
 
-getKeyPath(group2, '1')
+// getKeyPath(group2, '1-2-2-1')
+// getKeyPath(group2, '2-1-2')
+
+let result = getGroup(group2, '1-2-2-1')
+console.log(result)

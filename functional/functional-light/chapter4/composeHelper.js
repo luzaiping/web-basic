@@ -28,7 +28,7 @@ function composeReduceUnary(...fns) {
 }
 
 function composeReduce(...fns) {
-    return fns.reduceRight.reduce(function reducer(fn1, fn2) {
+    return fns.reduceRight(function reducer(fn1, fn2) {
         return function composed(...args) {
             return fn2(fn1(...args))
         }
