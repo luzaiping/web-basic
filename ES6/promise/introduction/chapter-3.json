@@ -1,0 +1,5 @@
+{
+  "heading": "<h1>Chapter three: balabalabala</h1>",
+  "content": "Chapter three",
+  "html": " first time we've seen Promise.resolve(), which creates a promise that resolves to whatever value you give it. If you pass it an instance of Promise it'll simply retur <br />"
+}

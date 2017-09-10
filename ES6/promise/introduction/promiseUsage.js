@@ -68,14 +68,14 @@ let resultEle = document.getElementById('result')
     }) */
 
 function addHtmlToPage(html) {
-    resultEle.innerHTML = html
+    resultEle.innerHTML += `<div>${html}</div>`
 }
 
 function addTextToPage(text) {
-    resultEle.innerText = text
+    resultEle.innerText += text
 }
 
-getJSON('story.json')
+/* getJSON('story.json')
     .then(story => {
         return getJSON(story.chapterUrls[0])
     })
@@ -87,4 +87,66 @@ getJSON('story.json')
     })
     .then(() => {
         console.log('no matter what i just keep going.')
+    }) */
+
+/* getJSON('story.json')
+    .then(story => {
+        addHtmlToPage(story.heading)
+
+        return story.chapterUrls.reduce((chain, url) => {
+            return chain.then(() => {
+                return getJSON(url)
+            }).then(chapter => {
+                addHtmlToPage(chapter.html)
+            })
+        }, Promise.resolve())
+    })
+    .then(() => {
+        addTextToPage('All done.')
+    })
+    .catch(error => {
+        addTextToPage('something is wrong. ' + error.message)
+    })
+    .then(() => {
+        addTextToPage('88')
+    }) */
+
+    /* getJSON('story.json')
+        .then(story => {
+            addHtmlToPage(story.heading)
+            return Promise.all(story.chapterUrls.map(getJSON))
+        })
+        .then(chapters => {
+            chapters.forEach(chapter => {
+                addHtmlToPage(chapter.html)
+            })
+        })
+        .catch(error => {
+            addTextToPage(`something goes wrong: ${error.message}`)
+        })
+        .then(() => {
+            addTextToPage('well done.')
+        }) */
+
+getJSON('story.json')
+    .then(story => {
+        addHtmlToPage(story.heading)
+        story.chapterUrls.map(getJSON).reduce( // 对所有chapter的getJSON promise进行reduce
+            (chain, chapterPromise) => {
+                chain.then(() => {
+                        return chapterPromise // 前面的promise resolve完了，才处理下一个 promise
+                    })
+                    .then(chapter => {
+                        addHtmlToPage(chapter)
+                    })
+            }, Promise.resolve()) // 默认是一个立即resolve的promise
+    })
+    .then(() => {
+        addTextToPage('All done.')
+    })
+    .catch(error => {
+        addTextToPage(error.message)
+    })
+    .then(() => {
+        addTextToPage('hide spinner')
     })

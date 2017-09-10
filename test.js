@@ -40,10 +40,15 @@ function sum(...args) {
     return count
 }
 
-let sumPartical = partical(sum, 1, 2, 3, 4)
+/* let sumPartical = partical(sum, 1, 2, 3, 4)
 let sumCurried = strictCurry(sum, 5)
 let looseCurried = looseCurry(sum, 5)
 
 console.log(sumPartical(5, 6, 7))
 console.log(sumCurried(1)(2)(3)(4)(5))
-console.log(looseCurried(1)(2, 3)(3, 4, 5, 7, 8))
+console.log(looseCurried(1)(2, 3)(3, 4, 5, 7, 8)) */
+
+let double = value => value * 2
+let arr = [1, 2, 3, 4, 5]
+console.log(arr.map(double))
+

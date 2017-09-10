@@ -1,5 +1,5 @@
 {
-  "heading": "<h1>A story about something</h1>",
+  "heading": "<h1>A story about something</h1> <br/>",
   "chapterUrls": [
     "chapter-1.json",
     "chapter-2.json",
