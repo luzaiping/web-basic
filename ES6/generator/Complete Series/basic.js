@@ -23,9 +23,26 @@ function sendInAndSendOut() {
 
     let iter = foo(5)
     console.log(iter.next()) // {value: 6, done: false}
-    console.log(iter.next(12)) // {value: 8, done: false}
+    console.log(iter.next(12)) // {value: 8, done: false}. The second next(12) resume the generator as if the previous yield expression( yield (x + 1)) return 12
     console.log(iter.next(13)) // {vlaue: 42, done: true}
 }
 
 sendInAndSendOut()
+
+function forOf() {
+    function *foo() {
+        yield 1
+        yield 2
+        yield 3
+        yield 4
+        yield 5
+        return 6 // returned value won't loop out.
+    }
+
+    for (let value of foo()) {
+        console.log(value)
+    }
+}
+
+// forOf()
 
