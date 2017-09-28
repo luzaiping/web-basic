@@ -33,13 +33,13 @@ for(var key in obj) {
 
 // ES6 for-of on string
 for (var char of 'hello') {
-    // console.log(char);
+    console.log(char);
 }
 
 // ES6 for-of on like-array data
 function test() {
     for (var arg of arguments) {
-        // console.log(arg);
+        console.log(arg);
     }
 }
 test(1,2,3,4);
@@ -51,7 +51,7 @@ for (var setEle of uniqueSet) {
 }*/
 
 // under the hood, implement an iterator
-class RangeIterator {
+/* class RangeIterator {
     constructor(start, stop) {
         this.value = start;
         this.stop = stop;
@@ -78,4 +78,4 @@ function range(start, stop) {
 
 for(var value of range(1, 10)) {
     console.log(value);
-}
+} */

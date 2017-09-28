@@ -3,7 +3,7 @@
  */
 
 Function.prototype.bind = function (obj) {
-    var self = this;
+    var self = this
     var boundArgs = Array.prototype.slice.call(arguments, 1);
 
     return function () {

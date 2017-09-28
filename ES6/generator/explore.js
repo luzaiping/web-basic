@@ -20,7 +20,7 @@ function iterableUsage() {
 		}
 	}
 
-	const obj = { name: 'perry', sex: 'male', age: 98};
+	const obj = { name: 'perry', sex: 'male', age: 98 };
 	const iterable = objectEntries(obj);
 
 	for (const [key, value] of iterable) {

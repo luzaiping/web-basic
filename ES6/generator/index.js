@@ -20,13 +20,18 @@ function* range(start, end) {
     }
 }
 
-var iter = range(0, 3);
-
+/* console.log(iter.next());
 console.log(iter.next());
 console.log(iter.next());
 console.log(iter.next());
-console.log(iter.next());
-
+ */
 /*for(var value of range(0, 3)) {
     console.log(value);
 }*/
+
+for (let value of range(0, 3)) {
+    console.log(value)
+}
+
+let [...arr] = range(0, 3)
+console.log(arr)
