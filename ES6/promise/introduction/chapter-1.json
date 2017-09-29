@@ -1,5 +1,5 @@
 {
   "heading": "Chapter one: balabalabala",
   "content": "Chapter one",
-  "html": "u want html, and show u. first time we've seen Promise.resolve(), which creates a promise that resolves to whatever value you give it. If you pass it an instance of Promise it'll simply retur <br />"
+  "html": "1. u want html, and show u. first time we've seen Promise.resolve(), which creates a promise that resolves to whatever value you give it. If you pass it an instance of Promise it'll simply retur <br />"
 }
