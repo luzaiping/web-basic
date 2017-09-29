@@ -81,6 +81,7 @@ Promise2.prototype.then = function (onResolved, onRejected) {
                     if (resolvedResult instanceof Promise2) {
                         resolvedResult.then(resolve, reject)
                     }
+                    resolve(resolvedResult)
                 } catch (error) {
                     reject(error)
                 }
@@ -107,12 +108,15 @@ Promise.prototype.catch = function (onRejected) {
 }
 
 
-let promise = new Promise2(function(resolve, reject) {
+let promise = new Promise2(function(resolve) {
     setTimeout(() => {
         resolve(1)
     }, 100)
 })
 
 promise.then(function(value) {
+    console.log('1111: ', value)
     return value + 1
+}).then(function(value) {
+    console.log(value)
 })

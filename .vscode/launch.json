@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}\\functional\\functional-light\\chapter3\\particalHelper.js"
+            "program": "${workspaceRoot}\\ES6\\promise\\simplestSimulation\\simulation.js"
         }
     ]
 }
