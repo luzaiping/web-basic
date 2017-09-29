@@ -52,3 +52,20 @@ let double = value => value * 2
 let arr = [1, 2, 3, 4, 5]
 console.log(arr.map(double))
 
+let promise = new Promise(function(resolve, reject) {
+    resolve(1)
+})
+
+promise.then(function(value) {
+    // return value + 1
+    return new Promise(function(resolve) {
+        resolve(value + 1)
+    })
+}, function(reason) {
+    console.error(reason)
+}).then(function(value) {
+    return value + 2
+}, function(reason) {
+    console.error(reason)
+})
+
