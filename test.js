@@ -69,3 +69,32 @@ promise.then(function(value) {
     console.error(reason)
 })
 
+function testSpreadOperator() {
+    let obj1 = {
+        user: {
+            name: 'Felix',
+            age: 20,
+            sex: 'male'
+        },
+        location: {
+            province: 'fj',
+            city: 'fz',
+            county: 'sm'
+        }
+    }
+
+    let obj2 = {
+        // ...obj1,
+        user: {
+            name: 'Sandy',
+            age: 21
+        },
+        location: {
+            province: 'fj',
+            city: 'xm'
+        },
+        company: 'rc'
+    }
+
+    console.log(obj2)
+}

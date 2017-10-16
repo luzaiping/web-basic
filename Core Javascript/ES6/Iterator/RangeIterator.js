@@ -20,26 +20,30 @@ class RangeIterator {
     }
 }
 
-function range(start, stop) {
-    return new RangeIterator(start, stop)
-}
+let rangeIterator = new RangeIterator(0, 3)
 
-for (let value of range(0, 3)) {
-    console.log(value)
-}
+console.log(rangeIterator.next())
+
+// for (let value of rangeIterator) {
+//     console.log(value)
+// }
 
 /**
  * Generator 内部实现了 [Symbol.iterator] 和 next 方法， 
  * 即 generator 对象是 Iterable
  * 所以可以通过 for-of 得到对应的值
  * 也可以单步调用 next()
- */
-function *rangeGenerator(start, stop) {
-    for (let i = start; i < stop; i++) {
-        yield i
+ function *rangeGenerator(start, stop) {
+     for (let i = start; i < stop; i++) {
+         yield i
+        }
     }
-}
+    
+    let iterator = rangeGenerator(0, 3)
+    
+    console.log(iterator.next())
+*/
 
-for (let value of rangeGenerator(0, 3)) {
-    console.log(value)
-}
+// for (let value of rangeGenerator(0, 3)) {
+//     console.log(value)
+// }

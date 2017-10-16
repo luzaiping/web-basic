@@ -1,7 +1,7 @@
 function basicSyntax() {
     function *foo() {
         let x = 1 + (yield 1*2) // yield 加上后面的内容 称作 yield 表达式(expression)
-        return 3 // 不要用return，否则for ... of 会得不到返回值
+        return x // 不要用return，否则for ... of 会得不到返回值
     }
     
     let iter = foo()
@@ -27,7 +27,7 @@ function sendInAndSendOut() {
     console.log(iter.next(13)) // {vlaue: 42, done: true}
 }
 
-sendInAndSendOut()
+// sendInAndSendOut()
 
 function forOf() {
     function *foo() {
@@ -36,13 +36,34 @@ function forOf() {
         yield 3
         yield 4
         yield 5
-        return 6 // returned value won't loop out.
+        console.log('1111')
     }
 
-    for (let value of foo()) {
-        console.log(value)
-    }
+    let it = foo()
+    console.log(it.next())
+    console.log(it.next())
+    console.log(it.next())
+    console.log(it.next())
+    console.log(it.next())
+    console.log(it.next())
+
+    // for (let value of foo()) {
+    //     console.log(value)
+    // }
 }
 
 // forOf()
 
+
+function* foo(a = 0) {
+    let x = a + (yield 1) // line 1
+    let y = x + (yield 2) // line 2
+    let z = y + (yield 3) // line 3
+    console.log(x, y, z) // line 4
+}
+
+let iter = foo(1) // line 5
+iter.next(2) // line 6
+iter.next(3) // line 7
+iter.next(4) // line 8
+iter.next(5) // line 9

@@ -1,8 +1,8 @@
-const config = ['sakya', 'saga', 'Dohko']
+const data = ['五角大楼', '企业号', '金字塔']
 
 function makeAsyncCall(number, callback) {
     setTimeout(function() {
-        callback(config[number % 3])
+        callback(data[number % 3])
     }, 1000)
 }
 
@@ -34,9 +34,7 @@ function promisePair() {
 
     function request(number) {
         return new Promise(function(resolve) {
-            makeAsyncCall(number, function(response) {
-                resolve(response)
-            })
+            makeAsyncCall(number, resolve)
         })
     }
 
@@ -71,18 +69,16 @@ function promisePair() {
         console.log(result4)
     })
 }
-// promisePair()
+promisePair()
 
 function complexity() {
 
     function request(number) {
         return new Promise(function(resolve) {
-            makeAsyncCall(number, function(response) {
-                resolve(response)
-            })
+            makeAsyncCall(number, resolve)
         })
         .then(function(response) {
-            return response === 'sakya' ? request(1) : response
+            return response === '五角大楼' ? request(1) : response
         })
     }
 
@@ -126,5 +122,5 @@ function complexity() {
     })
 }
 
-complexity()
+// complexity()
 
