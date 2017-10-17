@@ -15,7 +15,7 @@ async function add1(x) {
 async function add2(x) {
     const p_a = resolveAfter2Seconds(20)
     const p_b = resolveAfter2Seconds(30)
-    return x + p_a + p_b
+    return x + await p_a + await p_b
 }
 
 add1(10).then( value => {
