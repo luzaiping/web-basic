@@ -13,7 +13,6 @@ function once(fn) {
     }
 }
 
-
 const spyCase = () => {
     describe('sinon spy case', function() {
         it('spy once', function() {

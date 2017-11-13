@@ -40,7 +40,7 @@ let syncCase = () => {
 }
 
 let asynCase = () => {
-    let Ajax = require('../../Browser/mockAjax')
+    let Ajax = require('../../Client-Side Javascript/mockAjax')
     describe('Ajax', function() {
         describe('#load', function() {
             it('should return the load result', function (done) {
@@ -48,20 +48,6 @@ let asynCase = () => {
                     expect(result).to.equal('asyn result')
                     done()
                 })
-            })
-        })
-    })
-}
-
-let promiseCase = () => {
-    var promise = require('../../ES6/promise/promiseTest')
-    describe('promiseTest', function() {
-        it('#resolve should return 1', function(done) {
-            promise.then(function(result) {
-                expect(result).to.equal(1)
-                done()
-            }, function(err) {
-                done(err)
             })
         })
     })
@@ -135,7 +121,6 @@ let slowCase = () => {
 
 syncCase()
 asynCase()
-promiseCase()
 pendingCase()
 // onlyCase()
 skipCase()

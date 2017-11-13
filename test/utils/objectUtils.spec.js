@@ -1,6 +1,6 @@
-let chai = require('chai')
-let expect = chai.expect
-let objectUtils = require('../../utils/objectUtils')
+import { expect } from 'chai'
+import objectUtils from '../../utils/objectUtils'
+
 
 describe('objectUtils.js', function() {
     it('#isEmpty', function() {
