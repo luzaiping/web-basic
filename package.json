@@ -27,7 +27,7 @@
     "mocha": "^3.2.0",
     "moment": "^2.18.1",
     "server-static": "^2.0.5",
-    "sinon": "^2.1.0"
+    "sinon": "^4.1.2"
   },
   "dependencies": {
     "humps": "^2.0.1"
