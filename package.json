@@ -30,6 +30,7 @@
     "sinon": "^4.1.2"
   },
   "dependencies": {
-    "humps": "^2.0.1"
+    "humps": "^2.0.1",
+    "lodash": "^4.17.4"
   }
 }
