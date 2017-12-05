@@ -4,24 +4,41 @@
 
 var mySingleton = function() {
 
-    var instance;
+    let instance
 
+    /* 负责生成实例的方法或者构造函数 */
     function init() {
-        // do some initialization right here and return singleton
+
+        function privateMethod() {
+            console.log('I am private.')
+        }
+
+        let privateVariable = 'I am also private.'
+        let privateRandomNumber = Math.random()
+
+        // 返回全局唯一的 instance，这个instance 通过 singleton 的 getInstance() 获取
         return {
-            name: 'init'
-        };
+            publicMethod: function() {
+                console.log('The public can see me.')
+            },
+            publicProperty: 'I am also public.',
+            getRandomNumber: function() {
+                return privateRandomNumber
+            }
+        }
     }
 
     return {
         getInstance: function () {
             if(!instance) {
-                instance = init();
+                instance = init()
             }
-            return instance;
+            return instance
         }
     }
-}();
+}()
 
-var instance = mySingleton.getInstance();
-console.log(instance.name);
+let instance = mySingleton.getInstance()
+let instance2 = mySingleton.getInstance()
+console.log(instance === instance2)
+console.log(instance.getRandomNumber() === instance2.getRandomNumber())
