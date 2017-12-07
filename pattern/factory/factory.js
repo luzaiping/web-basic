@@ -17,7 +17,7 @@ function Truck(options) {
 function VehicleFactory() {}
 
 VehicleFactory.prototype.vehicleType = Car;
-VehicleFactory.prototype.createVehicle = function (options) {
+VehicleFactory.prototype.createVehicle = function (options) { // factory method
     switch (options.vehicleType) {
         case 'car':
             this.vehicleType = Car;
@@ -44,7 +44,7 @@ var truck = vehicleFactory.createVehicle({
 console.log(truck instanceof Truck);
 
 function TruckFactory() {}
-TruckFactory.prototype = new VehicleFactory();
+TruckFactory.prototype = vehicleFactory;
 TruckFactory.prototype.constructor = TruckFactory;
 TruckFactory.prototype.vehicleType = Truck;
 var truckFactory = new TruckFactory();
