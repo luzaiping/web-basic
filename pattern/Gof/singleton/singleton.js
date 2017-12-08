@@ -18,10 +18,10 @@ var mySingleton = function() {
 
         // 返回全局唯一的 instance，这个instance 通过 singleton 的 getInstance() 获取
         return {
+            publicProperty: 'I am also public.',
             publicMethod: function() {
                 console.log('The public can see me.')
             },
-            publicProperty: 'I am also public.',
             getRandomNumber: function() {
                 return privateRandomNumber
             }
