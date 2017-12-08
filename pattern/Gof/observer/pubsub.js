@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/12/1.
  */
 
-var pubsub = {};
+var pubSub = {};
 
 (function(myObject) {
     var topics = {};
@@ -40,4 +40,4 @@ var pubsub = {};
         }
     };
 
-})(pubsub);
+})(pubSub);

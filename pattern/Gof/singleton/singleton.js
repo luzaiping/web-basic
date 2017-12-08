@@ -6,7 +6,7 @@ var mySingleton = function() {
 
     let instance
 
-    /* 负责生成实例的方法或者构造函数 */
+    /* 负责生成实例的方法 */
     function init() {
 
         function privateMethod() {
