@@ -6,66 +6,30 @@
 var subjectFactory = (function() {
 
     function Subject() {
-        this.observers = observerListFactory.create();
+        this.observers = []
     }
 
     Subject.prototype.addObserver = function (obj) {
-        this.observers.add(obj);
+        this.observers.push(obj);
     };
 
     Subject.prototype.removeObserver = function (obj) {
-        this.observers.removeAt(this.observers.indexOf(obj,0));
+        let length = this.observers.length
+        let matchedIndex = 0
+        for (let index = 0; index < length; index++) {
+            if (this.observers[index] === obj) matchedIndex = index
+        }
+        this.observers.splice(matchedIndex, 1)
+        // this.observers.removeAt(this.observers.indexOf(obj,0));
     };
 
     Subject.prototype.notify = function (context) {
-        var count = this.observers.count();
-        for(var i=0; i<count; i++) {
-            this.observers.get(i).update(context);
+        var length = this.observers.length;
+        for(var i=0; i<length; i++) {
+            let observer = this.observers[i]
+            observer && observer.update && observer.update(context);
         }
     };
-
-    function observerListFactory() {
-        function ObserverList() {
-            this.observerList = [];
-        }
-
-        ObserverList.prototype.add = function(obj) {
-            return this.observerList.push(obj);
-        };
-
-        ObserverList.prototype.count = function () {
-            return this.observerList.length;
-        };
-
-        ObserverList.prototype.get = function (index) {
-            var observer;
-            if(-1 < index < this.observerList.length) {
-                observer = this.observerList[index];
-            }
-            return observer;
-        };
-
-        ObserverList.prototype.indexOf = function (obj, startIndex) {
-            var i = startIndex;
-            while(i < this.observerList.length) {
-                if(this.observerList[i] === obj) {
-                    return i;
-                }
-                i++;
-            }
-            return -1;
-        };
-
-        ObserverList.prototype.removeAt = function (index) {
-            this.observerList.splice(index, 1);
-        };
-
-        return {
-            create: function() {
-                return new ObserverList();
-            }
-        };
-    }
 
     return {
         create: function() {
@@ -103,7 +67,6 @@ function createConcreteObserver() {
     };
     return checkBox;
 }
-
 
 // testing such as main method in java
 addBtn.onclick = function() {
