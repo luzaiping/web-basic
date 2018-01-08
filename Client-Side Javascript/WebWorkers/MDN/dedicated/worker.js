@@ -7,3 +7,5 @@ onmessage =  function(e) { // 监听主线程(创建该 worker 的程序) 发送
     console.log('Posting message back to main script.', workerResult)
     postMessage(workerResult)
 }
+
+// close() // close itself
