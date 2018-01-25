@@ -24,7 +24,6 @@ console.log(str)
 let fileName = `${__dirname}/data/test.js`
 
 
-
 fs.writeFile(fileName, data, error => {
     if (error) throw error
     console.log('The "data to append" was appended to file!')
