@@ -4,7 +4,7 @@
     const webGLContext = canvas.getContext('webgl') // 这个上下文是基于特定的canvas实例
 
     if (!webGLContext) {
-        alert('Unable to initialize WebGL. Your browser or machine may not support it.')
+        console.log('Unable to initialize WebGL. Your browser or machine may not support it.')
         return
     }
 
