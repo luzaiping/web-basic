@@ -1,0 +1,24 @@
+<svg width="220" height="220" xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+
+        <linearGradient id="gradient1" x1="0" y1="0" x2="0" y2="1">
+            <stop stop-color="red" offset="5%"/>
+            <stop stop-color="orange" offset="95%"/>
+        </linearGradient>
+
+        <linearGradient id="gradient2">
+            <stop stop-color="white" offset="5%"/>
+            <stop stop-color="blue" offset="95%"/>
+        </linearGradient>
+
+        <pattern id="pattern" x="0" y="0" width="0.25" height="0.25">
+            <rect x="0" y="0" width="50" height="50" fill="skyblue"/>
+            <rect x="0" y="0" width="25" height="25" fill="url(#gradient1)"/>
+            <circle cx="25" cy="25" r="20" fill="url(#gradient2)" fill-opacity="0.5"/>
+        </pattern>
+
+    </defs>
+
+    <rect width="200" height="200" stroke="black" fill="url(#pattern)"/>
+</svg>
