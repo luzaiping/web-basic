@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>native ecmascript module in browser</title>
+  <script type="module" src=' main.js '></script>
+  <script type="module">
+    console.log('module inline script')
+    import { sum } from './math.js'
+    console.log('check sum: ', sum(1, 2))
+  </script>
+  <script type="text/javascript">
+    console.log('inline script')
+  </script>
+</head>
+<body>
+</body>
+</html>
