@@ -18,7 +18,7 @@ function simplestAsync() {
      */
     function request(url) {
         if (cache[url]) {
-            setTimeout(function() { // 这边需要加上setTimeout，因为yiled request()只有在执行完 request() 后，generator 才进入paused state；然后才可以调用 iter.next()
+            setTimeout(function() { // 这边需要加上setTimeout，因为yield request()只有在执行完 request() 后，generator 才进入paused state；然后才可以调用 iter.next()
                 iter.next(cache[url]) // 如果不加 setTimeout，就会立即调用 iter.next()，就会抛错
             })
         } else {
