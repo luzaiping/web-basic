@@ -2,7 +2,7 @@
 let typeUtils = require('./typeUtils')
 
 function isEmpty(obj) {
-    return typeUtils.isObject(obj) && Object.keys(obj).length === 0
+  return typeUtils.isObject(obj) && Object.keys(obj).length === 0
 }
 
 /**
@@ -13,6 +13,22 @@ function getKeyValue(key) {
 
 }
 
+function deepCopy(source, target) {
+  var target = target || {}
+  for (var key in source) {
+    if (typeof source[key] === 'object') {
+      target[key] = source[key].constructor === Array ? [] : {}
+      deepCopy(source[key], target[key])
+    } else {
+      target[key] = source[key]
+    }
+  }
+  return target
+}
+
+let source = { name: 'Felix', address: { province: 'fj', city: 'fuzhou' }, companies: [ 'rc', { last: 'nd', title: 'senior' }] }
+console.log(deepCopy(source, {age: 30}))
+
 module.exports = {
-    isEmpty
+  isEmpty
 }

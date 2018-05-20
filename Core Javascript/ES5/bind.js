@@ -2,26 +2,36 @@
  * Created by Administrator on 2016/11/30.
  */
 
-Function.prototype.bind = function (obj) {
-    var self = this
-    var boundArgs = Array.prototype.slice.call(arguments, 1);
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== 'function') {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
 
-    return function () {
-        var args = [], i;
+    var aArgs   = Array.prototype.slice.call(arguments, 1), // 第一次传递的参数，转成数组
+        fToBind = this, // 具体要调用的函数
+        fNOP    = function() {}, // 空函数
+        fBound  = function() {
+          return fToBind.apply(
+            this instanceof fNOP ? this : oThis,
+            aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
 
-        [boundArgs, arguments].forEach(function (value) {
-            for(i=0; i< value.length; i++) {
-                args.push(value[i]);
-            }
-        });
+    if (this.prototype) {
+      // Function.prototype doesn't have a prototype property
+      fNOP.prototype = this.prototype; 
+    }
+    fBound.prototype = new fNOP();
 
-        return self.apply(obj, args);
-    };
-};
+    return fBound;
+  };
+}
 
 function f(y,z) {
     return this.x + y + z;
 }
 
-var g = f.bind({x:5}, 2);
-console.log(g(4));
+var g = f.bind({x:5});
+console.log(g(5,4));

@@ -14,7 +14,6 @@
     "rules": {
         "indent": [0, 4],
         "quotes": [1, "single"],
-        "semi": [1, "never"],
         "no-unused-vars" : 1
     }
 
