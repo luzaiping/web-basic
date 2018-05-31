@@ -9,6 +9,3 @@ http.get('http://www.manning.com', function(res) {
 countStream.on('total', function(count) {
   console.log('Total matches: ', count)
 })
-
-
-export default countStream
