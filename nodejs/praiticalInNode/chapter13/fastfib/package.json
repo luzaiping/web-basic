@@ -1,0 +1,21 @@
+{
+  "name": "fastfib",
+  "version": "0.1.0",
+  "description": "Calculates a Fibonacci number as fast as possible with only JavaScript.",
+  "main": "index.js",
+  "private": true,
+  "bin": {
+    "fastfib": "./bin/index.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test"
+  },
+  "author": "",
+  "license": "ISC"
+}
