@@ -63,7 +63,7 @@ console.log(pc1 === pc2)
 
 // https://www.oreilly.com/library/view/learning-javascript-design/9781449334840/ch09s04.html
 
-var mySingleton = function() {
+var mySingleton = (function() {
   let instance
 
   function init() {
@@ -84,4 +84,4 @@ var mySingleton = function() {
       return instance;
     }
   }
-}
+})()

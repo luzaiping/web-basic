@@ -1,0 +1,26 @@
+Module {
+  id: '.',
+  exports: {},
+  parent: null,
+  filename: '/Users/samer/learn-node/index.js',
+  loaded: false,
+  children: [],
+  paths: [ ... ] 
+}
+In util Module {
+  id: '/Users/samer/learn-node/lib/util.js',
+  exports: {},
+  parent:
+  Module {
+  id: '.',
+  exports: {},
+  parent: null,
+  filename: '/Users/samer/learn-node/index.js',
+  loaded: false,
+  children: [ [Circular] ],
+  paths: [...] },
+  filename: '/Users/samer/learn-node/lib/util.js',
+  loaded: false,
+  children: [],
+  paths: [...] 
+}

@@ -1,7 +1,7 @@
 function curry(fn, arity = fn.length) {
     return (function nextCurried(prevArgs) {// prevArgs 是一个数组
-        return function curried(nextArgs) {// nextArgs不是数组,只能是一个参数
-            let args = prevArgs.concat([nextArgs])
+        return function curried(nextArg) {// nextArg不是数组,只能是一个参数
+            let args = prevArgs.concat([nextArg])
             if (args.length >= arity) {
                 return fn(...args) // 当参数个数已经达到原始函数的parameter个数，则执行原先函数，参数是已经收集的所有arguments
             } else {
@@ -12,7 +12,7 @@ function curry(fn, arity = fn.length) {
 }
 
 function looseCurry(fn, arity = fn.length) {
-    return (function nextCurried(prevArgs) {// prevArgs 是一个数组``
+    return (function nextCurried(prevArgs) {// prevArgs 是一个数组
         return function curried(...nextArgs) {// nextArgs是数组，可以是多个参数
             let args = prevArgs.concat(nextArgs)
             if (args.length >= arity) {

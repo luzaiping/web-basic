@@ -27,9 +27,10 @@ function composeReduceUnary(...fns) {
     }
 }
 
+// 这个实现跟 redux 的 compose 是一样
 function composeReduce(...fns) {
     return fns.reduceRight(function reducer(fn1, fn2) {
-        return function composed(...args) {
+        return function composed(...args) { // 这边可以接收多个参数
             return fn2(fn1(...args))
         }
     })

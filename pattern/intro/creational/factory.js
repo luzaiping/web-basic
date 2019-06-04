@@ -26,7 +26,7 @@
   }
 }
 
-// 具体类型 - 被委托的类型
+// 具体产品 - 被委托的类型
 class Football {
   constructor() {
     this.type = 'football';
@@ -36,7 +36,7 @@ class Football {
   }
 }
 
-// 具体类型 - 被委托的类型
+// 具体产品 - 被委托的类型
 class Basketball {
   constructor() {
     this.type = 'basketball';
@@ -82,3 +82,16 @@ const Bmwx6 = BmwFactory.create('x6')
 
 Bmwx5.getDetail()
 Bmwx6.getDetail()
+
+
+// 
+
+let factory = {
+  create(type) {
+    if (type === 1) {
+      return new ProductA()
+    } else {
+      return new ProductB()
+    }
+  }
+}

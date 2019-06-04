@@ -44,4 +44,46 @@ function f(a) {
   let b = a + 1;
   return id(b); // (B)
 }
-console.log(f(2)); // (C)`
+// console.log(f(2)); // (C)
+
+function partical(fn, ...presetArgs) {
+  return function particallyApplied(...laterArgs) {
+    return fn(...presetArgs, ...laterArgs);
+  }
+}
+
+function reverseArgs(fn) {
+  return function reverse(...args) {
+    return fn(...args.reverse())
+  }
+}
+
+function curry(fn, arity = fn.length) {
+  return (function nextCurried(presetArgs) {
+    return function(nextArg) {
+      let args = presetArgs.concat([nextArg])
+      return args.length > arity ? fn(...args) : nextCurried(args)
+    }
+  }([]))
+}
+
+// compose(f, g, h) => f(g(h))
+function compose(...fns) {
+  return function composed(result) {
+    let fnList = [...fns] // copy the arry of functions to new fnList
+    while (fnList.length > 0) {
+      result = fnList.pop()(result) // 获取最上面那个fn，先执行
+    }
+    return result
+  }
+}
+
+function composeReduce(...fns) {
+  return function composed(result) {
+    return [...fns].reverse().reduce(function reducer(result, fn) {
+      return fn(result)
+    }, result)
+  }
+}
+
+var compose = (...fns) => result => [...fns].reverse().reduce((result, fn) => fn(result), result);

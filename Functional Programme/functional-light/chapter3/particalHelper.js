@@ -13,13 +13,17 @@ function particalRight(fn, ...presetArgs) {
         partical(reverseArgs(fn), ...presetArgs.reverse())
     )
 }
+function particalRightTwo(fn, ...presetArgs) {
+    return function particalApplied(...laterArgs) {
+        return fn(...laterArgs, ...presetArgs);
+    }
+}
 
 // 将前后的参数顺序都revert
 // 比如 particalRight(test, 1, 2)(3, 4)  等同于 test(4, 3, 2, 1)
 function particalRightAll(fn, ...presetArgs) {
     return partical(reverseArgs(fn), ...presetArgs)
 }
-
 
 module.exports = {
     partical,
