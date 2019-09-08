@@ -187,8 +187,7 @@
 
 alert(
     'OS: ' + jscd.os +' '+ jscd.osVersion + '\n' +
-    'Browser: ' + jscd.browser +' '+ jscd.browserMajorVersion +
-      ' (' + jscd.browserVersion + ')\n' + 
+    'Browser: ' + jscd.browser +' '+ jscd.browserMajorVersion + ' (' + jscd.browserVersion + ')\n' + 
     'Mobile: ' + jscd.mobile + '\n' +
     'Flash: ' + jscd.flashVersion + '\n' +
     'Cookies: ' + jscd.cookies + '\n' +
