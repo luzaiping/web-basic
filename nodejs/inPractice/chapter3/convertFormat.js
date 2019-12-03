@@ -13,15 +13,16 @@ basic()
 function convertToBuffer() {
   let name = 'johnny', password = 'c-bad'
   let originStr = `${name}:${password}`
-  let buf = new Buffer(originStr) // convert utf8 encoded string to buffer
-  let base64Str = buf.toString('base64') // convert buffer to base64 encoded string.
-  // let base64Str = Buffer(originStr).toString('base64') // equals to above two lines.
+  const encoding = 'base64'
+  // let buf = Buffer.from(originStr) // convert utf8 encoded string to buffer, using Buffer.from
+  // let base64Str = buf.toString(encoding) // convert buffer to base64 encoded string.
+  let base64Str = Buffer.from(originStr).toString(encoding) // equals to above two lines.
   console.log(base64Str)
 
 }
 convertToBuffer()
 
-function constructDataURI() {
+function constructDataURIs() {
   let mimeType = 'image/png'
   let encoding = 'base64'
   let fileName = path.resolve(__dirname, 'ES6.png')
@@ -30,10 +31,9 @@ function constructDataURI() {
 }
 
 function createNewImage(uri) {
-  let data = uri.split(',')[1]
-  let buffer = new Buffer(data, 'base64')
+  let [, data ] = uri.split(',')
+  let buffer = Buffer.from(data, 'base64')
   let newFileName = path.resolve(__dirname, 'secondES6.png')
   fs.writeFileSync(newFileName, buffer)
 }
-
-createNewImage(constructDataURI())
+createNewImage(constructDataURIs())
