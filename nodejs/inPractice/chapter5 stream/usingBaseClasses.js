@@ -14,6 +14,7 @@ const basicInheritance = () => {
   }
   
   // In Node, util.inherits can be used instead of Object.create
+  // util.inherits(MyReadStream, Readable);
   MyReadStream.prototype = Object.create(Readable.prototype, { // using Object.create to correctly setup up the prototype chain
     constructor: { value: MyReadStream }
   });
@@ -36,18 +37,18 @@ const jsonLineParser = () => {
 
   util.inherits(JSONLineReader, stream.Readable);
 
-  JSONLineReader.prototype._read = function (size) {
-    const chunk;
-    const line;
-    const lineIndex;
-    const result;
+  JSONLineReader.prototype._read = function () {
+    let chunk;
+    let line;
+    let lineIndex;
+    let result;
 
     if (this._buffer.length === 0) {
       chunk = this._source.read();
       this._buffer += chunk;
     }
 
-    lineIndex = this._buffer.indexOf('n'); // current line break index
+    lineIndex = this._buffer.indexOf('\n'); // current line break index
 
     if (lineIndex !== -1) {
       line = this._buffer.slice(0, lineIndex);
@@ -68,8 +69,8 @@ const jsonLineParser = () => {
 
   const jsonLineReader = new JSONLineReader(input);
 
-  jsonLineReader.on('object', function (obj) {
-    console.log(`pos: ${obj.position}, -letter: ${object.letter}`);
+  jsonLineReader.on('object', function ({name, age}) {
+    console.log(`name: ${name}, age: ${age}`);
   })
 };
 

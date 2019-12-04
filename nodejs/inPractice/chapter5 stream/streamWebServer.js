@@ -27,7 +27,7 @@ const withoutStreamable = () => {
 // using createReadStream, read chunk of data at a time, is more efficient.
 const withSteamable = () => {
   http.createServer((req, res) => {
-    fs.createReadStream(INDEX_FILE_PATH).pipe(res);
+    fs.createReadStream(INDEX_FILE_PATH).pipe(res); // Data is piped from a file to Node's HTTP Response Object.
   }).listen(8000);
 };
 // withSteamable();
@@ -42,3 +42,11 @@ const withGzipWebServer = () => {
       .pipe(res);
   }).listen(8000);
 };
+
+const pipeUsage = () => {
+  const readable = fs.createReadStream(__dirname + '/json-lines.txt');
+  const writeable = fs.createWriteStream(__dirname + '/json-lines.txt.zip');
+  readable.pipe(zlib.createGzip()).pipe(writeable);
+}
+
+pipeUsage();
