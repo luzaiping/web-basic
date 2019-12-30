@@ -19,12 +19,12 @@ const friendWithSuper = {
   getGreeting() {
     // 1. super.getGreeting() 相当于 Object.getPrototypeOf(this).call(this)
     return super.getGreeting() + ', hi with super!';
-  },
+  }
 
   /* getGreetingWrong: function() {
     return super.getGreeting + ', throw error!'; // 2. super 只能在简写的方法里使用
   } */
-}
+};
 
 Object.setPrototypeOf(friendWithSuper, person);
 console.log(friendWithSuper.getGreeting());
@@ -47,13 +47,12 @@ console.log(friendWithSuper.getGreeting()); // Hello, hi with super!
 // 3. 这种情况是ok，因为 super 引用是固定，不会因为调用方式不同而发生变化，也就是 friend.getGreeting 里的 super.getGreeting() 总是指向 person.getGreeting
 console.log(relative2.getGreeting()); // // Hello, hi with super!
 
-
 /************************ [[HomeObject]] ************************************/
 const animal = {
   getGreeting() {
     return 'mu mu mu ....';
   }
-}
+};
 
 const dog = {
   // 4. 对象中的方法，都具有一个 [[HomeObject]] 内部属性，这个指向它所在的对象，这边就是指向 dog 这个对象
@@ -67,6 +66,6 @@ const dog = {
   getGreeting() {
     return super.getGreeting() + ', wang wang';
   }
-}
+};
 
 Object.setPrototypeOf(dog, animal);
