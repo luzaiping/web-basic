@@ -27,21 +27,17 @@ const jsonLineParser = () => {
   function JSONLineReader(source) {
     stream.Readable.call(this);
     this._source = source;
-    this.foundLineEnd = false;
     this._buffer = '';
 
-    source.on('readable', function() {
+    source.on('readable', () => {
       this.read();
-    }.bind(this));
+    });
   }
 
   util.inherits(JSONLineReader, stream.Readable);
 
   JSONLineReader.prototype._read = function () {
-    let chunk;
-    let line;
-    let lineIndex;
-    let result;
+    let chunk, line, lineIndex, result;
 
     if (this._buffer.length === 0) {
       chunk = this._source.read();
