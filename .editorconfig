@@ -5,15 +5,19 @@
 root = true
 
 # Unix-style newlines with a newline ending every file
+# 下面这5个配置项跟 prettier 配置是重复
+# 这边配置，.prettier 没有配置的话，就会以这边的配置为准
+# 所以建议定义在这边，这样就不需要两边都配置
 [*]
 indent_style = space
 indent_size = 2
+end_of_line = lf
+max_line_length = 80
+tab_width = 2
 
 # 保证在任何操作系统上都有统一的行尾结束字符
-end_of_line = lf
 charset = utf-8
 insert_final_newline = true
-max_line_length = 80
 
 # 针对 markdown 文件的配置
 [*.md]
