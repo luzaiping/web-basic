@@ -1,17 +1,8 @@
 # EditorConfig is awesome: http://EditorConfig.org
 
 # top-most EditorConfig file
+# 有这个配置，就不会继续往上一级目录查找配置文件了
 root = true
-
-[*.md]
-trim_trailing_whitespace = false
-
-# 去除尾部的空格
-[*.js]
-trim_trailing_whitespace = true
-
-#
-tab_width = 2
 
 # Unix-style newlines with a newline ending every file
 [*]
@@ -23,3 +14,11 @@ end_of_line = lf
 charset = utf-8
 insert_final_newline = true
 max_line_length = 80
+
+# 针对 markdown 文件的配置
+[*.md]
+trim_trailing_whitespace = false
+
+# 针对js, jsx文件的配置
+[*.{js,jsx}]
+trim_trailing_whitespace = true
