@@ -17,7 +17,7 @@ tab_width = 2
 
 # 保证在任何操作系统上都有统一的行尾结束字符
 charset = utf-8
-insert_final_newline = true
+insert_final_newline = false
 
 # 针对 markdown 文件的配置
 [*.md]
