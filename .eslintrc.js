@@ -24,9 +24,8 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error', // prettier 作为 eslint rule 被校验
-    indent: [0, 2],
     quotes: [1, 'single'],
     semi: [0, 'never'],
-    'no-unused-vars': 1
+    'no-unused-vars': 'error'
   }
 };
