@@ -17,3 +17,8 @@ fs.readFile(filePath, (err, buf) => {
 // sync mode
 // const config = JSON.parse(fs.readFileSync(filePath).toString());
 // doWithConfig(config);
+
+// the next three line is the same.
+// console.log('Logging to stdout'); // just sugar of next line
+// process.stdout.write('Logging to stdout');
+// fs.writeFileSync(1, 'Logging to stdout'); // fd 1 stands for stdout
