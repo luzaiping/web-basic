@@ -18,7 +18,7 @@ module.exports = {
     node: true
   },
   parserOptions: {
-    ecmaVersion: 8,
+    ecmaVersion: 2018, // 这个可以解决 spread 和 rest operator 问题
     sourceType: 'module',
     ecmaFeatures: {}
   },
