@@ -6,7 +6,8 @@ let expectedAssertions = 2;
 
 const buildData = id => `Welcome client: ${id}\r\n`;
 
-// client 参数是一个 net.Socket instance
+// client 参数是一个 net.Socket instance, 代表连接进来的client
+// net.Socket 是 duplex stream (can read from it and write into it)
 const server = net.createServer(client => {
   clients++;
 
