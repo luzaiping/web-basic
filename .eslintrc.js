@@ -23,6 +23,8 @@ module.exports = {
     ecmaFeatures: {}
   },
   rules: {
+    'func-names': 0,
+    'no-console': 0,
     'prettier/prettier': 'error', // prettier 作为 eslint rule 被校验
     quotes: [1, 'single'],
     semi: [0, 'never'],
