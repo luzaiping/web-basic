@@ -1,6 +1,6 @@
 module.exports = {
   // eslint-config-prettier 会将跟 prettier 冲突的配置禁用掉，即 默认使用 prettier 的配置
-  extends: ['prettier'],
+  extends: ['airbnb-base', 'prettier'],
   globals: {
     /* window: true,
     document: true,
