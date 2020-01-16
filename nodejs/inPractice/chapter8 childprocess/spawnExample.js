@@ -3,7 +3,7 @@
 // working with data as it's read in.
 const childProcess = require('child_process');
 
-const fs = require('fs');
+// const fs = require('fs');
 
 // spawn method returns a ChildProcess object containing stdin
 // stdout,and stderr stream objects.
