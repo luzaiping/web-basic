@@ -15,7 +15,8 @@ module.exports = {
   plugins: ['prettier'],
   env: {
     browser: true,
-    node: true
+    node: true,
+    mocha: true // support mocha
   },
   parserOptions: {
     ecmaVersion: 2018, // 这个可以解决 spread 和 rest operator 问题
