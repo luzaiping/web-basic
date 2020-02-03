@@ -6,6 +6,7 @@ const options = {
   cert: fs.readFileSync('server-cert.pem'), // public key
   // client public key as CA (这边是测试用，实际应该交给商业 CA 进行认证)
   // when using a commercially obtained certificate, this stage isn’t usually required. ***
+  // this is required for self-signed cert.
   ca: [fs.readFileSync('client-cert.pem')],
   requestCert: true // set client authorization is forced.
 };
