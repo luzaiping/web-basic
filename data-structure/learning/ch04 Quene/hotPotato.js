@@ -1,4 +1,4 @@
-const Queue = require('./queue');
+const Queue = require('./Queue');
 
 function hotPotato(nameList, num) {
   const queue = new Queue();
