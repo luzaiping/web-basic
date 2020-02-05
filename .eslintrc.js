@@ -29,6 +29,7 @@ module.exports = {
     'prettier/prettier': 'error', // prettier 作为 eslint rule 被校验
     quotes: [1, 'single'],
     semi: [0, 'never'],
-    'no-unused-vars': 'error'
+    'no-unused-vars': 'error',
+    'no-plusplus': 0
   }
 };
