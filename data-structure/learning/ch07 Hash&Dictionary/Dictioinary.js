@@ -48,7 +48,6 @@ class Dictionary {
   keys() {
     return Object.keys(this.items);
   }
-
 }
 
 module.exports = Dictionary;
