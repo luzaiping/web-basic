@@ -18,7 +18,7 @@ tab_width = 2
 # 保证在任何操作系统上都有统一的行尾结束字符
 end_of_line = lf
 # 在文件最后面自动添加新行，保存后才会生效
-insert_final_newline = true
+insert_final_newline = false
 
 # 针对 markdown 文件的配置
 [*.md]
