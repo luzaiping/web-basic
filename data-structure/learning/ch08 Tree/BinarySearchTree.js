@@ -12,6 +12,11 @@ function Node(key) {
   }
 }
 
+/**
+ * 将指定节点添加到 tree
+ * @param {Node} node 父节点
+ * @param {Node} newNode 要插入的节点
+ */
 function insertNode(node, newNode) {
   if (newNode.key < node.key) {
     if (node.left === null) {
