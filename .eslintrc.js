@@ -43,6 +43,7 @@ module.exports = {
     quotes: [1, 'single'],
     semi: [0, 'never'],
     'no-unused-vars': 'error',
-    'no-plusplus': 0
+    'no-plusplus': 0,
+    'import/prefer-default-export': 0
   }
 };
