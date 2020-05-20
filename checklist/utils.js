@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * 常见笔试题
  */
@@ -9,7 +10,7 @@ function debounce(func, wait, immediate) {
   var context;
   var args;
 
-  var debounced = function () {
+  var debounced = function() {
     context = this; // 修复 this 指向
     args = arguments; // 修复 event 对象
 
@@ -38,7 +39,7 @@ function debounce(func, wait, immediate) {
 
   // 取消防抖，这个只对 immediate 是 true 有用
   // immediate 是 false 的话，wait 毫秒还会执行
-  debounced.cancel = function () {
+  debounced.cancel = function() {
     clearTimeout(timeout);
     timeout = null;
   };
@@ -52,7 +53,7 @@ function throttle(fn, delay) {
   var context;
   var args;
 
-  return function () {
+  return function() {
     context = this;
     args = arguments;
     if (!timeout) {
@@ -67,7 +68,7 @@ function throttle(fn, delay) {
 /**
  * 通过递归的方式复制。这种实现方式效率低，并且没有处理一些特殊值
  * 用于常规笔试正常是够了
- * @param {Object} obj 
+ * @param {Object} obj
  */
 function deepCopy(obj) {
   if (typeof obj !== 'object') return;
@@ -99,7 +100,10 @@ function flatten(arr = []) {
 // 数组扁平化实现二。通过 toString 转换成 逗号分割的字符串，然后通过 split
 // 拆分成数组；这种方法要求数组元素都是数字，否则toString后值可能会变化
 function flatten2(arr = []) {
-  return arr.toString().split(',').map(item => +item);
+  return arr
+    .toString()
+    .split(',')
+    .map(item => +item);
 }
 
 // 数组扁平化实现三。通过 reduce 递归处理，跟方法一类似
@@ -119,7 +123,7 @@ function unique(arr = []) {
     currentVal = arr[i];
     if (result.indexOf(currentVal) === -1) {
       result.push(currentVal);
-    } 
+    }
   }
 }
 
@@ -212,7 +216,7 @@ function unique4(arr = [], isSorted, iteratee) {
 
 /**
  * 使用 filter 简化上面的实现，相当于原先的 for 循环改用 filter 来处理
- * @param {Array} arr 
+ * @param {Array} arr
  */
 function uniqueFilter(arr = []) {
   // array.indexOf(value) 只会返回第一个匹配的索引
@@ -222,16 +226,19 @@ function uniqueFilter(arr = []) {
 
 // 对数组进行排序后再去重，这个效率要比没有排序快一点
 function uniqueSortedFilter(arr = []) {
-  return arr.contact().sort().filter((value, index, array) => index === 0 || value !== array[index - 1]);
+  return arr
+    .contact()
+    .sort()
+    .filter((value, index, array) => index === 0 || value !== array[index - 1]);
 }
 
 // 使用 object 去重，将去重的值作为 object 的 key，value 随便，只要 obj.hasOwnProperty(value) 存在，那就是重复值
 // 否则将存储这个值. 这种方法，1 和 '1' 会被当作是重复值，导致去重后有问题
 function uniqueObject(arr = []) {
   const obj = {};
-  return arr.filter((value) => {
+  return arr.filter(value => {
     return obj.hasOwnProperty(value) ? false : (obj[value] = true);
-  })
+  });
 }
 
 // 这种方式是上面的改进，使用 typeof value + JSON.stringify(value)
@@ -242,7 +249,7 @@ function uniqueObjectKey(arr = []) {
   return arr.filter(value => {
     key = typeof value + JSON.stringify(value);
     return obj.hasOwnProperty(key) ? false : (obj[key] = true);
-  })
+  });
 }
 
 // 使用 ES6 Set 去重
@@ -256,4 +263,3 @@ function uniqueMap(arr = []) {
   const map = new Map();
   return arr.filter(value => !map.has(value) && map.set(value, 1));
 }
-
