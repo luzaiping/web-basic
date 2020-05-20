@@ -1,3 +1,4 @@
+/* eslint-disable */
 var count = 1;
 var container = document.getElementById('container');
 
@@ -12,7 +13,7 @@ function debounce(func, wait, immediate) {
   var debounced = function() {
     var context = this; // 修复 this 指向
     var args = arguments; // 修复 event 对象
-    
+
     timeout && clearTimeout(timeout);
 
     // 如果需要立即执行，先判断 wait 时间内是否有执行过，有的话就不执行；没有的话才立即执行

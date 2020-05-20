@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * js 轮子示例
  */
