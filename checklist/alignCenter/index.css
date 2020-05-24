@@ -1,0 +1,105 @@
+.outer {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #999;
+}
+
+.inner {
+  width: 100px;
+  height: 100px;
+  border: 1px solid darkorange;
+}
+
+/* 
+ * 1. 使用 Flex 
+ * 优点： 不需要知道元素的宽高 
+ * 兼容性: IE 10+, Chrome 4+, Firefox 2+, 手机都可以
+ */
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/**
+ * 2. 使用 grid 
+ * 优点：跟 flex 一样
+ * 缺点：兼容性没有 flex 好
+ */
+.grid-container {
+  display: grid;
+}
+
+.grid-self {
+  justify-self: center;
+  align-self: center;
+}
+
+/**
+ * 3. 使用 absolute + transform
+ * 优点：不需要知道元素的尺寸
+ * 缺点：兼容性
+ */
+.absolute-transform-container {
+  position: relative;
+}
+
+.absolute-transform-self {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/**
+ * 4. 使用 absolute + calc
+ * 缺点：需要知道元素的尺寸
+ * 兼容性：IE 9+, Chrome 19+, Firefox 4+；Android 4.4+, iOS 6+
+ */
+.absolute-calc-container {
+  position: relative
+}
+
+.absolute-calc-self {
+  position: absolute;
+  left: calc(50% - 50px);
+  top: calc(50% - 50px);
+}
+
+/**
+ * 5. 使用 absolute + margin
+ * 缺点：需要知道元素的尺寸
+ * 优点：兼容性好
+ * 兼容性：IE 6+, Chrome 4+, Firefox 2+；Android 2.3+, iOS 6+
+ */
+ .absolute-margin-container {
+  position: relative
+}
+
+.absolute-margin-self {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+}
+
+/**
+ * 6. 使用 absolute + margin auto
+ * 缺点：需要知道元素的尺寸
+ * 优点：兼容性好
+ * 兼容性：IE 6+, Chrome 4+, Firefox 2+；Android 2.3+, iOS 6+
+ */
+ .absolute-margin-auto-container {
+  position: relative
+}
+
+.absolute-margin-auto-self {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
