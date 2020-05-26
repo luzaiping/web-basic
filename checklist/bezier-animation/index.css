@@ -1,0 +1,43 @@
+html{
+  background: #ad4e24;
+ }
+
+.ball {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
+  z-index: 10;
+  background-color: greenyellow;
+}
+
+.run_top_right {
+  display: block;
+  animation: run-to-right 3s linear 0.4s 1, run-to-top 3s cubic-bezier(.66,.1,1,.41) 0.4s 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes run-to-top {
+  0% {
+    bottom: 40px;
+  }
+
+  100% {
+    bottom: 800px;
+  }
+}
+
+@keyframes run-to-right {
+  0% {
+    left: 40px;
+    transform: scale(0.7);
+  }
+
+  100% {
+    left: 600px;
+    transform: scale(0.4);
+    opacity: 0.1;
+  }
+}
