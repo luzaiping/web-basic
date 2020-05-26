@@ -1,0 +1,38 @@
+div {
+  margin-bottom: 10px;
+}
+
+div:last-child {
+  margin-bottom: 0;
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* 这个值设置为 50% ~ 100%之间都可以*/
+  background-color: aqua;
+}
+
+/* 这边绘制的是作半圆：宽得是高得一半尺寸，border-radius 设置为宽的尺寸 */
+.half_circle {
+  width: 50px;
+  height: 100px;
+  border-radius: 50px 0 0 50px;
+  background-color: blueviolet;
+}
+
+/* 1/4 圆，宽高一样大， border-radius 决定圆形的位置 */
+.quarter_circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px 0 0 0;
+  background-color: blue;
+}
+
+/* 实现方式跟圆形一样，只要宽高不一样大小就行 */
+.oval {
+  width: 100px;
+  height: 75px;
+  border-radius: 50%;
+  background-color: brown;
+}

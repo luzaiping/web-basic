@@ -1,0 +1,83 @@
+.rotate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  background-color: burlywood;
+  transform: rotate(-45deg);
+}
+
+.box {
+  width: 300px;
+  height: 300px;
+  border: 1px solid;
+}
+
+.item {
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  background-color: #fb3;
+  transform: scale(-1.2);  /* 相对 X 轴翻转，缩放比率还是 1.2 倍*/
+}
+
+/* 实现平行四边形 */
+.skew {
+  transform: skew(-45deg);
+  border: 0;
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  background-color: #fb3;
+}
+
+/* 平行四边形，嵌套一个父元素进行 skew，子元素再反方向 skew 回来*/
+.btn {
+  transform: skew(45deg);
+}
+
+.skew2 {
+  position: relative;
+  border: 0;
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.skew2::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: skew(-45deg);
+  background-color: #fb3;
+  z-index: -1;
+}
+
+/* 梯形 */
+.trapezoid {
+  position: relative;
+  width: 200px;
+  height: 60px;
+  line-height: 60px;
+  margin: 50px;
+  text-align: center;
+}
+
+.trapezoid::after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  background-color: #fb3;
+  transform: perspective(20px) rotateX(5deg);
+}
