@@ -34,7 +34,7 @@ function insertNode(node, newNode) {
 }
 
 /**
- * 有序遍历，从一个二叉搜索树(BST) 的最小值节点到最大值节点
+ * 中序遍历： 左子树---> 根结点 ---> 右子树
  * @param {Node} node 树节点
  * @param {Function} callback 处理节点的函数, 这个就是 visitor pattern
  */
@@ -47,7 +47,7 @@ function inOrderTraverseNode(node, callback) {
 }
 
 /**
- * 先访问父节点，再访问子节点(先左后右)
+ * 前序遍历：根结点 ---> 左子树 ---> 右子树
  * @param {Node} node 树节点
  * @param {Function} callback 处理节点的函数, 这个就是 visitor pattern
  */
@@ -60,7 +60,7 @@ function preOrderTraverseNode(node, callback) {
 }
 
 /**
- * 先访问子节点(先左后右)，再访问父节点
+ * 后序遍历：左子树 ---> 右子树 ---> 根结点
  * @param {Node} node 树节点
  * @param {Function} callback 处理节点的函数, 这个就是 visitor pattern
  */

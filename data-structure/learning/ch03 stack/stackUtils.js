@@ -1,4 +1,4 @@
-const Stack = require('./stack');
+const Stack = require('./Stack');
 
 /**
  * 十进制数字转换为指定进制的数字
