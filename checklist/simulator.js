@@ -324,3 +324,12 @@ function webacpkLoadModuleSimulator() {
     return symbol;
   }
 })();
+
+function jsonParseUsingEval(obj) {
+  // return eval("(" + obj + ")");
+  return eval(`(${obj})`)
+}
+
+function jsonParseUsingFunction(jsonStr) {
+  return (new Function(`return ${jsonStr}`))();
+}
