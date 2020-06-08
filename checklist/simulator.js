@@ -333,3 +333,108 @@ function jsonParseUsingEval(obj) {
 function jsonParseUsingFunction(jsonStr) {
   return (new Function(`return ${jsonStr}`))();
 }
+
+function jsonStringifySimulator(jsonObj) {
+  if (jsonObj === null) {
+    return String(jsonObj);
+  }
+
+  switch(typeof jsonObj) {
+    case 'number':
+    case 'boolean':
+      return String(jsonObj);
+    case 'string':
+      return `"${jsonObj}"`;
+    case 'undefined':
+    case 'function':
+      return undefined;
+  }
+
+  let currentValue = '';
+  let result;
+
+  switch(Object.prototype.toString.call(jsonObj).slice(8)) {
+    case '[object Number]':
+    case '[object Boolean]':
+      return String(jsonObj);
+    case '[object String]':
+      return `"${jsonObj}"`;
+    case '[object Date]':
+      return `"${jsonObj.toJSON ? jsonObj.toJSON() : jsonObj.toString()}"`;
+    case '[object RegExp]':
+      return '{}';
+    case '[object Array]':
+      result = '[';
+      const { length } = jsonObj;
+      for (let i=0; i < length; i++) {
+        currentValue = jsonStringifySimulator(jsonObj[i]);
+        result += `${(currentValue === undefined ? null : currentValue)},`;
+      }
+      if (length > 0) {
+        result = result.slice(0, -1);
+      }
+      return `${result}]`;
+    case '[object Object]':
+      result = '{';
+      for (let key of Object.keys(jsonObj)) {
+        currentValue = jsonStringifySimulator(jsonObj[key]);
+        // 注意这边是不等于 undefined，因为值为 null 是会被输出来
+        if (currentValue !== undefined) {
+          result += `"${key}": ${currentValue},`
+        }
+      }
+      if (result !== '{') {
+        result = result.slice(0, -1);
+      }
+      return `${result}}`;
+  }
+}
+
+// new Promise(function(resolve, reject))
+function PromiseSimulator() {
+  const STATUS = {
+    PENDING: Symbol('pending'),
+    RESOLVED: Symbol('resolved'),
+    REJECTED: Symbol('rejected')
+  };
+
+  function MyPromise(constructorFn) {
+    const self = this;
+    self.status = STATUS.PENDING;
+    self.value;
+    self.reason;
+
+    function resolve(value) {
+      if (self.status === STATUS.PENDING) {
+        self.status = STATUS.RESOLVED;
+        self.value = value;
+      }
+    }
+
+    function reject(reason) {
+      if (self.status === STATUS.PENDING) {
+        self.status = STATUS.REJECTED;
+        self.reason = reason;
+      }
+    }
+
+    try {
+      constructorFn(resolve, reject);
+    } catch (error) {
+      reject(error);
+    }
+  }
+
+  MyPromise.prototype.then = function(onFullfilled, onRejected) {
+    const self = this;
+    switch (self.status) {
+      case STATUS.RESOLVED:
+        onFullfilled(self.value);
+        break;
+      case STATUS.REJECTED:
+        onRejected(self.reason);
+        break;
+      default:
+    }
+  };
+}
