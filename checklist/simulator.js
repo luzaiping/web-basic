@@ -438,3 +438,37 @@ function PromiseSimulator() {
     }
   };
 }
+
+/**
+ * 这个版本可以拷贝大部分常见的数据类型，而且能处理循环引用问题
+ * 至于一些特殊场景，这边就不处理了
+ * @param {*} target
+ * @param {WeakMap} map
+ */
+function deepCopy(target, map = new WeakMap()) {
+  let copy = target;
+
+  // 处理 Array 和 Object
+  if (target !== null && typeof target === 'object') {
+    // 解决循环引用的问题
+    if (map.get(target)) {
+      return map.get(target);
+    }
+
+    copy = Array.isArray(target) ? [] : {};
+    map.set(target, copy); // 将拷贝后的值存储到 target
+
+    for (const key of Object.keys(target)) {
+      copy[key] = copyRecursive(target[key], map); // 这边需要将 map 作为参数传进去，否则下一次递归 map.get(target) 又是空
+    }
+
+    // 使用 while 循环做性能优化的实现方式
+    // map.set(target, copy);
+    // const keys = Array.isArray(target) ? null : Object.keys(target);
+    // forEach(keys || target, (value, key) => {
+    //   const newKey = keys ? value : key;
+    //   copy[newKey] = copyRecursive(target[newKey], map);
+    // });
+  }
+  return copy;
+}
