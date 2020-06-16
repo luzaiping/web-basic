@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta  charset="utf-8" />
-    <title>H5 Router</title>
+    <title>history router</title>
     <style>
       #nav {
         display: flex;
@@ -12,14 +11,17 @@
   </head>
   <body>
     <div id="nav">
-      <a href="#">Index</a>
-      <a href="#/page1">page1</a>
-      <a href="#/page2">page2</a>
-      <a href="#/page3">page3</a>
-      <a href="#/page4">error</a>
-      <a href="#/jdjdjd">not found</a>
+      <a href="/">home</a>
+      <a href="/page1">page1</a>
+      <a href="/page2">page2</a>
+      <a href="/page3">page3</a>
+      <a href="/page4">page4</a>
+      <a href="/page5">page5</a>
+      <button id="btn">page2</button>
     </div>
-    <div id="container"></div>
-    <script type="text/javascript" src="hashRouter.js"></script>
+    <div id="container">
+
+    </div>
+    <script type="text/javascript" src="./historyRouter.js"></script>
   </body>
 </html>
