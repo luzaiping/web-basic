@@ -54,6 +54,7 @@ function throttle(fn, delay) {
 
   return function() {
     var now = +new Date();
+    context = this;
     if (now - previous >= delay) {
       fn.apply(context, args);
       previous = now;
