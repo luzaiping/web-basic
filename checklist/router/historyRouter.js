@@ -31,12 +31,28 @@ class HistoryRouter {
     });
   }
 
-  // 用于首次进入页面时调用
+  // 跳转到指定路径，需要往 session histroy 添加记录
+  // 同时触发 path handler, 执行路径变化后所对应的处理函数 (通常就是更新 UI)
+  assign(path) {
+    window.history.pushState({ path }, null, path);
+    this.dealPathHandler(path);
+  }
+
+  replace(path) {
+    window.history.replaceState({ path }, null, path);
+    this.dealPathHandler(path);
+  }
+
+  // 这个是处理首次进入时，应该加载触发哪个路由，并更新UI
+  // 结果需要结合服务端进行处理，刷新页面会给服务端发送请求
+  // 需要先返回到 index.html，然后再通过 load 函数加载指定路由页面
   load() {
     const { pathname } = window.location;
     this.dealPathHandler(pathname);
   }
 
+  // 注册指定路由及其处理函数
+  // 处理函数就是用于更新 UI，这边可以换成是加载组件
   register(path, callback = function() {}) {
     path && (this.routers[path] = callback);
   }
@@ -51,18 +67,6 @@ class HistoryRouter {
 
   registerError(callback) {
     this.register(ROUTRES.ERROR, callback);
-  }
-
-  // 跳转到指定路径，需要往 session histroy 添加记录
-  // 同时触发 path handler, 执行路径变化后所对应的处理函数 (通常就是更新 UI)
-  assign(path) {
-    window.history.pushState({ path }, null, path);
-    this.dealPathHandler(path);
-  }
-
-  replace(path) {
-    window.history.replaceState({ path }, null, path);
-    this.dealPathHandler(path);
   }
 
   dealPathHandler(path) {
@@ -104,8 +108,6 @@ router.register('/page4', () => {
   throw new Error('抛出一个异常');
 });
 
-document.getElementById('btn').onclick = () => router.assign('/page2');
-
 // 注册未找到对应path值时的回调
 router.registerNotFound(() => {
   container.innerHTML = '页面未找到';
@@ -114,5 +116,8 @@ router.registerNotFound(() => {
 router.registerError(e => {
   container.innerHTML = '页面异常，错误消息：<br>' + e.message;
 });
+
+document.getElementById('btn').onclick = () => router.assign('/page2');
+
 // 加载页面
 router.load();
