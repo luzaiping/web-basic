@@ -1,7 +1,24 @@
 /* eslint-disable no-param-reassign */
+const TEXT_ELEMENT = 'TEXT_ELEMENT';
+const EFFECT_TAG = {
+  UPDATE: 'UPDATE',
+  PLACEMENT: 'PLACEMENT',
+  DELETION: 'DELETION'
+};
+
+let nextUnitOfWork = null;
+let currentRoot = null;
+let wipRoot = null;
+let deletions = null;
+
+const isEvent = key => key.startsWith('on');
+const isProperty = key => key !== 'children' && !isEvent(key);
+const isNew = (prev, next) => key => prev[key] !== next[key];
+const isGone = (prev, next) => key => !(key in next);
+
 function createTextElement(text) {
   return {
-    type: 'TEXT_ELEMENT',
+    type: TEXT_ELEMENT,
     props: {
       nodeValue: text,
       children: []
@@ -21,15 +38,17 @@ function createElement(type, props, ...children) {
   };
 }
 
-const isEvent = key => key.startsWith('on');
-const isProperty = key => key !== 'children' && !isEvent(key);
-const isNew = (prev, next) => key => prev[key] !== next[key];
-const isGone = (prev, next) => key => !(key in next);
-
-let nextUnitOfWork = null;
-let currentRoot = null;
-let wipRoot = null;
-let deletions = null;
+function render(element, container) {
+  wipRoot = {
+    dom: container,
+    props: {
+      children: [element]
+    },
+    alternate: currentRoot
+  };
+  deletions = [];
+  nextUnitOfWork = wipRoot;
+}
 
 function updateDom(dom, prevProps, nextProps) {
   // Remove old or changed event listeners
@@ -69,7 +88,7 @@ function updateDom(dom, prevProps, nextProps) {
 
 function createDom(fiber) {
   const dom =
-    fiber.type === 'TEXT_ELEMENT'
+    fiber.type === TEXT_ELEMENT
       ? document.createTextNode('')
       : document.createElement(fiber.type);
 
@@ -84,11 +103,11 @@ function commitWork(fiber) {
   }
 
   const domParent = fiber.parent.dom;
-  if (fiber.effectTag === 'PLACEMENT' && fiber.dom != null) {
+  if (fiber.effectTag === EFFECT_TAG.PLACEMENT && fiber.dom !== null) {
     domParent.appendChild(fiber.dom);
-  } else if (fiber.effectTag === 'UPDATE' && fiber.dom != null) {
+  } else if (fiber.effectTag === EFFECT_TAG.UPDATE && fiber.dom !== null) {
     updateDom(fiber.dom, fiber.alternate.props, fiber.props);
-  } else if (fiber.effectTag === 'DELETION') {
+  } else if (fiber.effectTag === EFFECT_TAG.DELETION) {
     domParent.removeChild(fiber.dom);
   }
 
@@ -103,23 +122,12 @@ function commitRoot() {
   wipRoot = null;
 }
 
-function render(element, container) {
-  wipRoot = {
-    dom: container,
-    props: {
-      children: [element]
-    },
-    alternate: currentRoot
-  };
-  deletions = [];
-  nextUnitOfWork = wipRoot;
-}
-
 function reconcileChildren(wipFiber, elements) {
   let index = 0;
   let oldFiber = wipFiber.alternate && wipFiber.alternate.child;
   let prevSibling = null;
 
+  // 注意这边的 oldFiber != null, 不可以换成 !==
   while (index < elements.length || oldFiber != null) {
     const element = elements[index];
     let newFiber = null;
@@ -133,7 +141,7 @@ function reconcileChildren(wipFiber, elements) {
         dom: oldFiber.dom,
         parent: wipFiber,
         alternate: oldFiber,
-        effectTag: 'UPDATE'
+        effectTag: EFFECT_TAG.UPDATE
       };
     }
     if (element && !sameType) {
@@ -143,11 +151,11 @@ function reconcileChildren(wipFiber, elements) {
         dom: null,
         parent: wipFiber,
         alternate: null,
-        effectTag: 'PLACEMENT'
+        effectTag: EFFECT_TAG.PLACEMENT
       };
     }
     if (oldFiber && !sameType) {
-      oldFiber.effectTag = 'DELETION';
+      oldFiber.effectTag = EFFECT_TAG.DELETION;
       deletions.push(oldFiber);
     }
 
