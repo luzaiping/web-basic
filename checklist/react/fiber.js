@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
 const TEXT_ELEMENT = 'TEXT_ELEMENT';
 const EFFECT_TAG = {
@@ -102,13 +103,28 @@ function commitWork(fiber) {
     return;
   }
 
-  const domParent = fiber.parent.dom;
+  let domParentFiber = fiber.parent;
+  while (!domParentFiber.dom) {
+    domParentFiber = domParentFiber.parent;
+  }
+
+  const domParent = domParentFiber.dom;
+
+  const commitDeletion = (fiber, domParent) => {
+    if (fiber.dom) {
+      domParent.removeChild(fiber.dom);
+    } else {
+      commitDeletion(fiber.child, domParent);
+    }
+  };
+
   if (fiber.effectTag === EFFECT_TAG.PLACEMENT && fiber.dom !== null) {
     domParent.appendChild(fiber.dom);
   } else if (fiber.effectTag === EFFECT_TAG.UPDATE && fiber.dom !== null) {
     updateDom(fiber.dom, fiber.alternate.props, fiber.props);
   } else if (fiber.effectTag === EFFECT_TAG.DELETION) {
-    domParent.removeChild(fiber.dom);
+    commitDeletion(fiber, domParent);
+    // domParent.removeChild(fiber.dom);
   }
 
   commitWork(fiber.child);
@@ -174,13 +190,28 @@ function reconcileChildren(wipFiber, elements) {
   }
 }
 
-function performUnitOfWork(fiber) {
+function updateHostComponent(fiber) {
   if (!fiber.dom) {
     fiber.dom = createDom(fiber);
   }
 
   const elements = fiber.props.children;
   reconcileChildren(fiber, elements);
+}
+
+function updateFunctionComponent(fiber) {
+  const children = fiber.type(fiber.props);
+  reconcileChildren(fiber, children);
+}
+
+function performUnitOfWork(fiber) {
+  const isFunctionComponent = fiber.type instanceof Function;
+
+  if (isFunctionComponent) {
+    updateFunctionComponent(fiber);
+  } else {
+    updateHostComponent(fiber);
+  }
 
   if (fiber.child) {
     return fiber.child;
