@@ -1,59 +1,43 @@
-var EventEmitter = require('events');
+/* eslint-disable no-unused-vars */
+const EventEmitter = require('events');
 
-EventEmitter.defaultMaxListeners = 10; // change defaultMaxListeners for all EventEmitter instances.
+const myEmitter = new EventEmitter();
 
-var emitter = new EventEmitter();
-emitter.setMaxListeners(11); // change defaultMaxListeners for single EventEmitter instance
+// 始终要为 EventEmitter 实例监听 error 事件
+// 这样一旦有错误发生，才不会导致 nodejs process crash。
+function catchError() {
+  myEmitter.on('error', err => {
+    console.error('whoops! there was an error.', err);
+  });
 
-emitter.on( 'foo', (a, b) => {console.log(a, b, this)} );
-emitter.on( 'foo', function (a, b) {console.log(a, b, this)} );
-emitter.on( 'bar', () => {
-	setImmediate(() => {
-		console.log('this happends async');
-	});
-	console.log('bar...');
-});
+  myEmitter.emit('error', new Error('whoops!'));
+}
 
+function newListenerUsage() {
+  // 一旦有新 Listener 被添加，就会触发这个监听器
+  // eventName: 事件名称
+  // listener: 具体事件处理函数
+  // 这边有个很细微的注意点：由于 newListener callback 会在添加事件之前被执行
+  // 因此在 newListener callback 里监听同一个事件，会更早被添加到事件数组里
+  // 这边要注意使用 once 而不是 on，确保 newListener callback 只被执行一次
+  // 否则会导致递归调用导致栈溢出
+  myEmitter.once('newListener', (eventName, listener) => {
+    if (eventName === 'event') {
+      console.log(`new listener ${eventName} is added.`, listener);
 
-const symbol = Symbol('symbol');
+      myEmitter.on('event', () => {
+        console.log('B');
+      });
+    }
+  });
 
-emitter.on(symbol, () => {});
+  myEmitter.on('event', () => {
+    console.log('A');
+  });
 
-var eventNamesArr = emitter.eventNames(); // return eventNames array that are registered into current emitter instance.
-var listenerCount = emitter.listenerCount('foo'); // return number of listeners regisited into specified eventName.
-var listeners = emitter.listeners('foo'); // return listerns array registered into specified eventName
+  myEmitter.emit('event');
 
-
-const test = () => {
-	let eventName = 'test';
-
-	emitter.on(eventName, () => {
-		console.log('test one');
-	});
-	emitter.once(eventName, () => {
-		console.log('test once');
-	});
-	emitter.prependListener(eventName, () => {
-		console.log('test prepend');
-	});
-	emitter.prependOnceListener(eventName, () => {
-		console.log('test prepend once');
-	});
-
-	emitter.emit(eventName);
-	console.log('===============');
-	emitter.emit(eventName);
-};
-
-
-// emitter.emit('foo', '1', '2');
-// emitter.emit('bar');
-
-// emitter.on('error', (error) => { console.log('whoops! there was an error') });
-// emitter.emit('error', new Error('whoops!'));
-
-emitter.once('newListener', (eventName, listener) => {
-	if( eventName === 'bar' ) {
-		console.log('bar is ready to add');
-	}
-});
+  // prints:
+  // B
+  // A
+}
