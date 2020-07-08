@@ -5,39 +5,25 @@
  */
 
 const { Readable } = require('stream');
-const stream = require('stream');
 const util = require('util');
 const fs = require('fs');
 
-const basicInheritance = () => {
-  function MyReadStream(options) {
-    Readable.call(this, options); // call base class's constructor to run essential setup code.
-  }
-
-  // In Node, util.inherits can be used instead of Object.create
-  // util.inherits(MyReadStream, Readable);
-  MyReadStream.prototype = Object.create(Readable.prototype, {
-    // using Object.create to correctly setup up the prototype chain
-    constructor: { value: MyReadStream }
-  });
-};
-
 // wrap an I/O source with a streamable API that provides a higher-level interface
 // that would otherwise be possible with the underlying data.
-const jsonLineParser = () => {
-  function JSONLineReader(source) {
-    stream.Readable.call(this);
-    this._source = source;
+class JSONLineReader extends Readable {
+  constructor(source) {
+    super();
+    this._source = source; // a readable
     this._buffer = '';
-
+    // 当有数据可以从 source 中读取时，触发 readable 事件
+    // 即数据源的数据已经到达 source 的 buffer，等待被读取
+    // 这时候调用 read 读取数据
     source.on('readable', () => {
       this.read();
     });
   }
 
-  util.inherits(JSONLineReader, stream.Readable);
-
-  JSONLineReader.prototype._read = function() {
+  _read(size) {
     let chunk;
     let line;
     let result;
@@ -60,17 +46,15 @@ const jsonLineParser = () => {
         this._buffer = this._buffer.slice(1);
       }
     }
-  };
+  }
+}
 
-  const input = fs.createReadStream(`${__dirname}/json-lines.txt`, {
-    encoding: 'utf8'
-  });
+const reader = fs.createReadStream(`${__dirname}/json-lines.txt`, {
+  encoding: 'utf8'
+});
 
-  const jsonLineReader = new JSONLineReader(input);
+const jsonLineReader = new JSONLineReader(reader);
 
-  jsonLineReader.on('object', function({ name, age }) {
-    console.log(`name: ${name}, age: ${age}`);
-  });
-};
-
-jsonLineParser();
+jsonLineReader.on('object', function({ name, age }) {
+  console.log(`name: ${name}, age: ${age}`);
+});
