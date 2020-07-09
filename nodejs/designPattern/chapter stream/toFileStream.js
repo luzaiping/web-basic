@@ -10,26 +10,15 @@ class ToFileStream extends Writable {
     super({ objectMode: true });
   }
 
+  // 必须在 _write 中同步或异步调用 callback
   _write(chunk, encoding, callback) {
-    console.log('==== _write is called ====', chunk);
+    console.log('==== _write is called using fs.createWriteStream ====');
+    const writer = fs.createWriteStream(chunk.path);
+    writer.write(chunk.content);
+    writer.end();
+    process.nextTick(callback);
 
-    // 不可以在 _write 方法中调用 writeable 的公共 API 方法
-    // 比如下面的 write 和 end, 否则会导致行为不确定
-    // 这个例子，就出现外面调用 3次 write，这边只执行了1次
-    // const writer = fs.createWriteStream(chunk.path);
-    // writer.write(chunk.content);
-    // writer.end();
-
-    fs.writeFile(chunk.path, chunk.content, callback);
-
-    // mkdirp(path.dirname(chunk.path), err => {
-    //   if (err) {
-    //     callback(err);
-    //   } else {
-    //     fs.writeFile(chunk.path, chunk.content, callback);
-    //     // fs.createWriteStream(chunk.path).write()
-    //   }
-    // });
+    // fs.writeFile(chunk.path, chunk.content, callback);
   }
 }
 

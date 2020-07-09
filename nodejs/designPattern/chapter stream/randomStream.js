@@ -13,12 +13,13 @@ class RandomStream extends Readable {
   // 这样 consumer 就可以触发 readable 事件，通过 .read() 方法得到数据
   // eslint-disable-next-line no-underscore-dangle
   _read() {
-    const chunk = chance.string(); // 生成一个随机的字符串
-    console.log(chunk);
-    this.push(`hello - ${chunk}`, 'utf8'); // push string into internal buffer. encoding is required for string.
-    if (chance.bool({ likelihood: 5 })) {
-      this.push(null); // pushing nulll means EOF, terminate the stream
-    }
+    console.log('=========');
+    // const chunk = chance.string(); // 生成一个随机的字符串
+    // console.log(chunk);
+    // this.push(`hello - ${chunk}`, 'utf8'); // push string into internal buffer. encoding is required for string.
+    // if (chance.bool({ likelihood: 5 })) {
+    //   this.push(null); // pushing nulll means EOF, terminate the stream
+    // }
   }
 }
 
