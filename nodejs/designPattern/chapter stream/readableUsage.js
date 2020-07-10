@@ -1,3 +1,10 @@
+/**
+ * process.stdin (Readable) 的使用例子
+ * 分别使用 paused mode 和 flowing mode读数据，
+ * 可以通过下面命令行运行该例子：
+ * `cat someFile.txt | node readableUsage`
+ */
+
 const endHandler = () => {
   // 一旦没有数据了，会告知应用程序，然后触发 end 事件
   process.stdout.write('End of stream');

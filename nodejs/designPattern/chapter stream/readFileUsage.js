@@ -1,6 +1,12 @@
+/**
+ * 读取文件的不同实现方式：
+ * 方法一：使用 Readble
+ * 方法二：直接将所有数据读取到 buffer
+ */
+
 const fs = require('fs');
 
-function readUsingStream() {
+function readFileUsinilegStream() {
   const reader = fs.createReadStream('./stream.txt');
 
   // reader.on('readable', function() {
@@ -24,7 +30,7 @@ function readUsingStream() {
   });
 }
 
-function readOneTime() {
+function readFileUsingBuffer() {
   fs.readFile('./stream.txt', (err, data) => {
     // 这边数据是一口气读取到内存中，等读取完毕后，才会触发 callback
     if (err) throw err;
@@ -32,5 +38,5 @@ function readOneTime() {
   });
 }
 
-readUsingStream();
-readOneTime();
+readFileUsinilegStream();
+readFileUsingBuffer();

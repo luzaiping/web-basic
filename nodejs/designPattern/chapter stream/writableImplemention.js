@@ -1,3 +1,6 @@
+/**
+ * 实现一个 Writable 类，关键是完成 _write 方法
+ */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable class-methods-use-this */
 const { Writable } = require('stream');

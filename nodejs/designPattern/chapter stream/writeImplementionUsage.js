@@ -1,4 +1,4 @@
-const ToFileStream = require('./toFileStream.js');
+const ToFileStream = require('./writableImplemention');
 
 const tfs = new ToFileStream();
 tfs.write({ path: 'file1.txt', content: 'Hello' }, () => {
