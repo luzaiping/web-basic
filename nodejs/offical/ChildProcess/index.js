@@ -1,7 +1,7 @@
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process');
 
-const ls = spawn('ls', ['-lh', '/'])
+const ls = spawn('ls', ['-lh', '/']);
 
-ls.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`)
+ls.stdout.on('data', data => {
+  console.log(`stdout: ${data}`);
 });

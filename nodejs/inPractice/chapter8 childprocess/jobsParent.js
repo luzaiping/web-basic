@@ -1,10 +1,10 @@
 const childProcess = require('child_process');
 
 function doWork(job, cb) {
-  const child = childProcess.fork('./jobsChild');
+  const subprocess = childProcess.fork('./jobsChild');
   let cbTriggered = false; // track if callback was callled.
 
-  child
+  subprocess
     .once('error', err => {
       if (!cbTriggered) {
         cb(err);
@@ -23,4 +23,10 @@ function doWork(job, cb) {
     .send(job);
 }
 
-doWork();
+doWork('This is dummy job', (err, result) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(`job result: ${result}`);
+  }
+});
