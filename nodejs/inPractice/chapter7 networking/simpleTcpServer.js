@@ -6,6 +6,22 @@ let expectedAssertions = 2;
 
 const buildData = id => `Welcome client: ${id}\r\n`;
 
+function runTest(expectedId, done) {
+  // 这边的 client 也是 net.Socket 对象
+  const client = net.connect(8080, () => {
+    console.log('client connect successfully.');
+  });
+
+  client.on('data', data => {
+    const exptectedData = buildData(expectedId);
+    assert.equal(data.toString(), exptectedData);
+    expectedAssertions--;
+    client.end();
+  });
+
+  client.on('end', done);
+}
+
 // client 参数是一个 net.Socket instance, 代表连接进来的client
 // net.Socket 是 duplex stream (can read from it and write into it)
 const server = net.createServer(client => {
@@ -33,19 +49,3 @@ server.listen(8080, () => {
     });
   });
 });
-
-function runTest(expectedId, done) {
-  // 这边的 client 也是 net.Socket 对象
-  const client = net.connect(8080, () => {
-    console.log('client connect successfully.');
-  });
-
-  client.on('data', data => {
-    const exptectedData = buildData(expectedId);
-    assert.equal(data.toString(), exptectedData);
-    expectedAssertions--;
-    client.end();
-  });
-
-  client.on('end', done);
-}

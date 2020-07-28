@@ -1,102 +1,108 @@
-// const assert = require('assert');
+/**
+ * 一个基于 udp 的 简易 chat 例子
+ */
+
 const dgram = require('dgram');
-// const fs = require('fs');
+const readline = require('readline');
 
-// const defaultSize = 16;
-const port = 43210;
 const socketType = 'udp4';
+const PORT = 4000;
+let isServerRunning = false;
 
-function Client(remoteIp) {
-  const socket = dgram.createSocket(socketType);
-  const readline = require('readline');
-  const readlineInstance = readline.createInterface(
-    process.stdin,
-    process.stdout
-  );
+/**
+ * 开启一个 upd client 并发送 'JOIN' 消息
+ * 之后进入 prompt 模式 提示用户输入 message，一旦输入完 message 后就将 message 发送给 server
+ * 同时监听 server 发送过来的 message，打印消息来源及内容，并再次进入 prompt 模式
+ * @param {String} remoteIp
+ */
+function startClient(remoteIp = 'localhost') {
+  const clientSocket = dgram.createSocket(socketType);
 
-  socket.send(Buffer.from('<Join>'), 0, 6, port, remoteIp);
+  const rl = readline.createInterface(process.stdin, process.stdout);
+  rl.setPrompt('Message>');
 
-  readlineInstance.setPrompt('Message> ');
-  readlineInstance.prompt();
-
-  readlineInstance
-    .on('line', line => {
-      sendData(line);
-    })
-    .on('close', () => {
-      process.exit(0);
+  const sendData = msg => {
+    const buffer = Buffer.from(msg);
+    clientSocket.send(buffer, 0, buffer.byteLength, PORT, remoteIp, () => {
+      console.log(`Sent: ${msg}`);
+      rl.prompt();
     });
+  };
 
-  socket.on('message', (msg, rinfo) => {
-    console.log('\n<' + rinfo.address + '>', msg.toString());
-    readlineInstance.prompt();
+  sendData('<JOIN>');
+
+  rl.on('line', msg => {
+    sendData(msg);
+  }).on('close', () => {
+    process.exit(0);
   });
 
-  function sendData(message) {
-    socket.send(Buffer.from(message), 0, message.length, port, remoteIp, () => {
-      console.log('Send: ', message);
-      readlineInstance.prompt();
-    });
-  }
+  clientSocket.on('message', (msg, rinfo) => {
+    console.log(`\n< ${rinfo.address}, ${msg}`);
+    rl.prompt();
+  });
+
+  clientSocket.on('error', () => {
+    clientSocket.disconnect();
+  });
 }
 
-function Server() {
-  const clients = {};
+// 这个 server 有个致命的问题，client 断开了， server 并不知道
+function startServer() {
   const server = dgram.createSocket(socketType);
 
-  server.on('message', (msg, rinfo) => {
-    const clientId = rinfo.address + ':' + rinfo.port;
-    const msgStr = msg.toString();
+  const clients = {}; // 存储 client 信息
 
-    if (!clientId[clientId]) {
-      clients[clientId] = rinfo;
+  server.bind(PORT);
+
+  server.on('listening', () => {
+    isServerRunning = true;
+    console.log('server ready:', server.address());
+  });
+
+  server.on('message', (buffer, rinfo) => {
+    const msg = buffer.toString();
+    const { address, port } = rinfo;
+    const currentClientId = `${address}:${port}`;
+
+    if (!clients[currentClientId]) {
+      clients[currentClientId] = rinfo;
     }
 
-    // receive join message
-    if (msgStr.match(/^</)) {
-      console.log('Control message:', msgStr);
-      return;
-    }
+    if (msg.match(/^</)) {
+      console.log(`${currentClientId} ${msg}`);
+    } else {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const clientId of Object.keys(clients)) {
+        if (clientId !== currentClientId) {
+          const {
+            address: destinationAddress,
+            port: destinationPort
+          } = clients[clientId];
 
-    for (const itemId in clients) {
-      if (itemId !== clientId) {
-        const client = clients[itemId];
-        server.send(
-          Buffer.from(msgStr),
-          0,
-          msgStr.length,
-          client.port,
-          client.address,
-          (err, bytes) => {
-            if (err) console.error(err);
-            console.log('Bytes send:', bytes);
-          }
-        );
+          server.send(
+            buffer,
+            0,
+            buffer.byteLength,
+            destinationPort,
+            destinationAddress,
+            (err, bytes) => {
+              err ? console.error(err) : console.log(`Bytes send: ${bytes}`);
+            }
+          );
+        }
       }
     }
   });
-
-  server.on('listening', () => {
-    console.log('Server is ready to conntect:', server.address());
-  });
-
-  server.bind(port);
 }
 
-if (!module.parent) {
-  switch (process.argv[2]) {
-    case 'client':
-      new Client(process.argv[3]);
-      break;
-    case 'server':
-      new Server();
-      break;
-    default:
-      console.log('Unkown option');
-  }
-}
+const [, , type, remoteIp] = process.argv;
 
-module.exports = {
-  Client,
-  Server
-};
+switch (type) {
+  case 'client':
+    startClient(remoteIp);
+    break;
+  default:
+    !isServerRunning && startServer();
+    break;
+}
