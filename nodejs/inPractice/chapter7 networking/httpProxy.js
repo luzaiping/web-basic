@@ -3,14 +3,14 @@ const url = require('url');
 
 http
   .createServer((req, res) => {
-    console.log('start request: ', req.url);
+    console.log('start request:', req.url);
     const options = url.parse(req.url);
     options.headers = req.headers;
 
     const proxyRequest = http.request(options, proxyResponse => {
       proxyResponse.on('data', chunk => {
-        console.log('proxyResponse length:', chunk.length);
-        res.write(chunk, 'binary');
+        console.log('proxyResponse length', chunk.length);
+        res.write(chunk, 'binary'); // 将数据返回给 client
       });
 
       proxyResponse.on('end', () => {
@@ -22,8 +22,8 @@ http
     });
 
     req.on('data', chunk => {
-      console.log('in request length:', chunk.length);
-      proxyRequest.write(chunk, 'binary');
+      console.log('in request length', chunk.length);
+      proxyRequest.write(chunk); // 将请求数据转给 proxyRequest
     });
 
     req.on('end', () => {
@@ -31,4 +31,4 @@ http
       proxyRequest.end();
     });
   })
-  .listen(8080);
+  .listen(9090);

@@ -1,53 +1,67 @@
 const http = require('http');
-const https = require('http2');
+const https = require('https');
 const url = require('url');
 
-function Request() {
-  this.maxRedirects = 10;
-  this.redirects = 0;
-}
+const MAX_REDIRECTS = 10;
 
-// this is comment
-Request.prototype.get = function(href, callback) {
-  const { host, path, protocol } = url.parse(href);
-  const options = { host, path };
-  const httpGet = protocol === 'http:' ? http.get : https.get;
+class Request {
+  constructor() {
+    this.redirects = 0;
+  }
 
-  console.log('GET:', href);
+  get(href, callback) {
+    const uri = url.parse(href);
+    const { protocol, host, path } = uri;
+    const options = { host, path };
+    const httpGet = protocol === 'http:' ? http.get : https.get;
 
-  const processResponse = response => {
+    console.log(`GET: ${href}`);
+    // 这边的 response 是 IncomingMessage 类型
+    httpGet(options, response => {
+      this.processResponse(response, host, href, callback);
+    });
+  }
+
+  // 判断是否需要重定向，如果需要就重新请求目标地址
+  // 如果不需要就返回内容
+  processResponse(response, host, href, callback) {
     const { statusCode, headers } = response;
-    if (statusCode >= 300 && statusCode < 400) {
-      if (this.redirects >= this.maxRedirects) {
-        this.error = new Error('Too many redirects for:', href);
+    const { location } = headers;
+    const needRedirect = statusCode >= 300 && statusCode < 400;
+    if (needRedirect) {
+      if (this.redirects >= MAX_REDIRECTS) {
+        this.error = new Error(`Too many redirects for: ${href}`);
       } else {
-        this.redirects += 1;
-        const redirectHref = url.resolve(host, headers.location);
-        this.get(redirectHref, callback);
+        this.redirects++;
+        const newHref = url.resolve(host, location);
+        console.log('Redirect: ', newHref);
+        this.get(newHref, callback);
       }
+    } else {
+      response.url = href;
+      response.redirects = this.redirects;
+
+      response.on('data', data => {
+        console.log(`Got data, length:${data.length}`);
+      });
+
+      response.on('end', () => {
+        console.log('Connection ended.');
+        callback(this.error, response);
+      });
     }
-    response.url = href;
-    response.redirects = this.redirects;
-    console.log('Redirected:', href);
-
-    const end = () => {
-      console.log('Connection ended');
-      callback(this.error, response);
-    };
-
-    response.on('end', end);
-  };
-
-  httpGet(options, processResponse).on('error', callback);
-};
+  }
+}
 
 const request = new Request();
 
-request.get('http://baidu.com/', (err, res) => {
-  if (err) {
-    console.error(err);
+request.get('http://www.google.cn', (error, response) => {
+  if (error) {
+    console.error(error);
   } else {
-    console.log('Fetched URL:', res.url, 'with', res.redirects, ' redirects');
+    console.log(
+      `Fetched URL: ${response.url} with ${response.redirects} redirects`
+    );
     process.exit();
   }
 });
