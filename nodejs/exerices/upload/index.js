@@ -161,7 +161,7 @@ async function handleUpload() {
     container.data = fileChunkList.map(({ file }, index) => ({
       chunk: file,
       hash: `${container.hash}-${index}`,
-      percentage: 0,
+      percentage: uploadedList.includes(index) ? 100 : 0,
       index
     }));
     uploadChunks(uploadedList);
