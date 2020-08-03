@@ -91,6 +91,18 @@ http
         return;
       }
 
+      if (req.url === '/verify') {
+        const { filename } = await resolvePost(req);
+        const filePath = path.resolve(UPLOAD_DIR, filename);
+        console.log('===== filePath ', filePath);
+        const exists = await fse.pathExists(filePath);
+        const result = {};
+        result.shouldUpload = !exists;
+
+        res.end(JSON.stringify(result));
+        return;
+      }
+
       const multi = new multiparty.Form();
 
       multi.parse(req, async (err, fields, files) => {

@@ -1,0 +1,36 @@
+/* eslint-disable no-restricted-globals */
+self.importScripts('./spark-md5.min.js');
+console.log('========== hash =========');
+
+self.onmessage = e => {
+  const { fileChunkList } = e.data;
+  const spark = new self.SparkMD5.ArrayBuffer();
+
+  let percentage = 0;
+  let count = 0;
+
+  const load = index => {
+    const reader = new FileReader();
+
+    reader.readAsArrayBuffer(fileChunkList[index].file);
+    reader.onload = event => {
+      count++;
+      spark.append(event.target.result);
+
+      if (count === fileChunkList.length) {
+        self.postMessage({
+          percentage: 100,
+          hash: spark.end()
+        });
+      } else {
+        percentage += 100 / fileChunkList.length;
+        self.postMessage({
+          percentage
+        });
+        load(index + 1);
+      }
+    };
+  };
+
+  load(0);
+};

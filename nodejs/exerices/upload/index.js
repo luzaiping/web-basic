@@ -7,9 +7,32 @@ const container = {
   file: null
 };
 
-const request = ({ url, method = 'post', data, headers = {} }) => {
+container.worker = new Worker('/hash.js');
+
+/**
+ * 计算各个 chunk file item 上传进度 及 总的上传进度
+ * @param {Object} item 指定 chunk file data
+ * @param {Object} data 所有 chunk files data
+ */
+const createProgressHandler = (item, data) => {
+  return e => {
+    // eslint-disable-next-line no-param-reassign
+    item.percentage = parseInt(String(e.loaded / e.total) * 100, 10) / 100;
+    console.log(`item${item.index}: ${item.percentage}\n`);
+    const allLoaded = data
+      .map(chunkItem => chunkItem.chunk.size * chunkItem.percentage) // 各个 chunk file 的乘以所上传的百分比，就得到各文件已上传的文件大小
+      .reduce((accu, cur) => accu + cur, 0); // 将各文件已上传文件大小求和
+
+    const allPercentage = (allLoaded / container.file.size).toFixed(2);
+    console.log('====== allPercentage =======', allPercentage);
+  };
+};
+
+const request = ({ url, method = 'post', data, headers = {}, onProgress }) => {
   return new Promise(resolove => {
     const xhr = new XMLHttpRequest();
+
+    onProgress && (xhr.upload.onprogress = onProgress);
     xhr.open(method, url);
 
     Object.keys(headers).forEach(key => {
@@ -45,23 +68,7 @@ function splitFileChunk(file, size = CHUNK_SIZE) {
   return fileChunkList;
 }
 
-async function uploadChunks(data = []) {
-  const requestList = data
-    .map(({ chunk, hash }) => {
-      const formData = new FormData();
-      formData.append('chunk', chunk);
-      formData.append('hash', hash);
-      formData.append('filename', container.file.name);
-      return formData;
-    })
-    .map(formData =>
-      request({
-        url: 'http://127.0.0.1:3000',
-        data: formData
-      })
-    );
-  await Promise.all(requestList);
-  // 调用合并文件的请求
+function mergeChunks() {
   request({
     url: 'http://localhost:3000/merge',
     headers: {
@@ -69,17 +76,82 @@ async function uploadChunks(data = []) {
     },
     data: JSON.stringify({
       size: CHUNK_SIZE,
-      filename: container.file.name
+      filename: container.filename
     })
   });
 }
 
-function handleUpload() {
+async function uploadChunks(data = []) {
+  const requestList = data
+    .map(({ chunk, hash, index }) => {
+      const formData = new FormData();
+      formData.append('chunk', chunk);
+      formData.append('hash', hash);
+      formData.append('filename', container.filename);
+      return { formData, index };
+    })
+    .map(({ formData, index }) =>
+      request({
+        url: 'http://127.0.0.1:3000',
+        data: formData,
+        onProgress: createProgressHandler(data[index], data)
+      })
+    );
+  await Promise.all(requestList);
+
+  // 调用合并文件的请求
+  mergeChunks();
+}
+
+function generateHash(fileChunkList) {
+  return new Promise(resolve => {
+    container.worker = new Worker('./hash.js');
+    container.worker.postMessage({ fileChunkList });
+    container.worker.onmessage = e => {
+      const { percentage, hash } = e.data;
+      console.log('======= hash percentage =========', percentage);
+      hash && resolve(hash);
+    };
+  });
+}
+
+async function verifyUpload({ filename, fileHash }) {
+  const { data } = await request({
+    url: 'http://localhost:3000/verify',
+    headers: {
+      'content-type': 'appllication/json'
+    },
+    data: JSON.stringify({
+      filename,
+      fileHash
+    })
+  });
+  return JSON.parse(data);
+}
+
+async function handleUpload() {
   if (container.file) {
     const fileChunkList = splitFileChunk(container.file);
+    container.hash = await generateHash(fileChunkList);
+    const fileExt = container.file.name.slice(
+      container.file.name.lastIndexOf('.')
+    );
+    container.filename = `${container.hash}${fileExt}`;
+    const { shouldUpload } = await verifyUpload({
+      filename: container.filename
+    });
+
+    if (!shouldUpload) {
+      console.log('======== 秒传：上传成功 ======');
+      return;
+    }
+
+    // 需要上传，构造上传数据
     const data = fileChunkList.map(({ file }, index) => ({
       chunk: file,
-      hash: `${container.file.name}-${index}`
+      hash: `${container.hash}-${index}`,
+      percentage: 0,
+      index
     }));
     uploadChunks(data);
   }
