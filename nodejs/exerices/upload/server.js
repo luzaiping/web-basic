@@ -92,12 +92,22 @@ http
       }
 
       if (req.url === '/verify') {
-        const { filename } = await resolvePost(req);
+        const { filename, fileHash } = await resolvePost(req);
         const filePath = path.resolve(UPLOAD_DIR, filename);
-        console.log('===== filePath ', filePath);
+        console.log('===== filePath, fileHash ', filePath, fileHash);
         const exists = await fse.pathExists(filePath);
         const result = {};
         result.shouldUpload = !exists;
+
+        if (!exists) {
+          // 获取已上传文件列表
+          const dirPath = path.resolve(UPLOAD_DIR, fileHash);
+          const dirExists = await fse.pathExists(dirPath);
+          if (dirExists) {
+            const uploadedList = (await fse.readdir(dirPath)) || [];
+            result.uploadedList = uploadedList;
+          }
+        }
 
         res.end(JSON.stringify(result));
         return;

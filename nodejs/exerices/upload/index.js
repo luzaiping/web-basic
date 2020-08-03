@@ -1,6 +1,7 @@
 const fileElem = document.querySelector('.file');
 const uploadElem = document.querySelector('.upload');
 const pauseElem = document.querySelector('.pause');
+const resumeElem = document.querySelector('.resume');
 
 const CHUNK_SIZE = 10 * 1024 * 1024;
 
@@ -9,7 +10,8 @@ const container = {
   worker: null, // 计算文件 hash 的 worker
   filename: null, // 文件上传后的文件名称 (hash + ext)
   hash: null, // 文件 hash 值，由 worker 计算得到，用于标识文件唯一性，实现秒传功能所需
-  requestList: [] // 当前文件上传的 xhr 列表
+  requestList: [], // 当前文件上传的 xhr 列表
+  data: null
 };
 
 /**
@@ -17,12 +19,12 @@ const container = {
  * @param {Object} item 指定 chunk file data
  * @param {Object} data 所有 chunk files data
  */
-const createProgressHandler = (item, data) => {
+const createProgressHandler = item => {
   return e => {
     // eslint-disable-next-line no-param-reassign
     item.percentage = parseInt(String(e.loaded / e.total) * 100, 10) / 100;
     console.log(`===== item${item.index} percentage: ${item.percentage}\n`);
-    const allLoaded = data
+    const allLoaded = container.data
       .map(chunkItem => chunkItem.chunk.size * chunkItem.percentage) // 各个 chunk file 的乘以所上传的百分比，就得到各文件已上传的文件大小
       .reduce((accu, cur) => accu + cur, 0); // 将各文件已上传文件大小求和
 
@@ -88,8 +90,10 @@ function mergeChunks() {
   });
 }
 
-async function uploadChunks(data = []) {
-  const requestList = data
+async function uploadChunks(uploadedList = []) {
+  console.log('== uploadedList ==', JSON.stringify(uploadedList, null, 2));
+  const requestList = container.data
+    .filter(({ hash }) => !uploadedList.includes(hash))
     .map(({ chunk, hash, index }) => {
       const formData = new FormData();
       formData.append('chunk', chunk);
@@ -101,7 +105,7 @@ async function uploadChunks(data = []) {
       request({
         url: 'http://127.0.0.1:3000',
         data: formData,
-        onProgress: createProgressHandler(data[index], data)
+        onProgress: createProgressHandler(container.data[index])
       })
     );
   await Promise.all(requestList);
@@ -122,7 +126,7 @@ function generateHash(fileChunkList) {
   });
 }
 
-async function verifyUpload({ filename, fileHash }) {
+async function verifyUpload({ filename, fileHash = container.hash }) {
   const { data } = await request({
     url: 'http://localhost:3000/verify',
     headers: {
@@ -144,7 +148,7 @@ async function handleUpload() {
       container.file.name.lastIndexOf('.')
     );
     container.filename = `${container.hash}${fileExt}`;
-    const { shouldUpload } = await verifyUpload({
+    const { shouldUpload, uploadedList = [] } = await verifyUpload({
       filename: container.filename
     });
 
@@ -154,13 +158,13 @@ async function handleUpload() {
     }
 
     // 需要上传，构造上传数据
-    const data = fileChunkList.map(({ file }, index) => ({
+    container.data = fileChunkList.map(({ file }, index) => ({
       chunk: file,
       hash: `${container.hash}-${index}`,
       percentage: 0,
       index
     }));
-    uploadChunks(data);
+    uploadChunks(uploadedList);
   }
 }
 
@@ -180,4 +184,12 @@ pauseElem.addEventListener('click', () => {
   console.log('abort file upload');
   container.requestList.forEach(xhr => xhr.abort());
   container.requestList = [];
+});
+
+resumeElem.addEventListener('click', async () => {
+  console.log('result uploading file.');
+  const { uploadedList = [] } = await verifyUpload({
+    filename: container.filename
+  });
+  uploadChunks(uploadedList);
 });
