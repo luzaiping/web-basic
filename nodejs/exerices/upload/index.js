@@ -1,10 +1,5 @@
 /* eslint-disable import/extensions */
-import {
-  verifyUpload,
-  uploadChunks,
-  handleUpload,
-  splitFileChunk
-} from './request.mjs';
+import { verifyUpload, uploadChunks } from './request.mjs';
 import { generateHash } from './hash.mjs';
 
 const fileElem = document.querySelector('.file');
@@ -16,9 +11,44 @@ const container = {
   file: null, // 上传文件，是个 File 类型
   filename: null, // 文件上传后的文件名称 (hash + ext)
   hash: null, // 文件 hash 值，由 worker 计算得到，用于标识文件唯一性，实现秒传功能所需
-  requestList: [] // 当前文件上传的 xhr 列表
-  // data: null
+  requestList: [], // 当前文件上传的 xhr 列表
+  data: null
 };
+
+async function handleUpload() {
+  const { hash, fileChunkList } = await generateHash(
+    container.file,
+    10 * 1024 * 1024
+  );
+
+  const fileExt = container.file.name.slice(
+    container.file.name.lastIndexOf('.')
+  );
+
+  container.hash = hash;
+  container.filename = `${container.hash}${fileExt}`;
+
+  if (container.file) {
+    const { shouldUpload, uploadedList = [] } = await verifyUpload({
+      filename: container.filename,
+      fileHash: container.hash
+    });
+
+    if (!shouldUpload) {
+      console.log('======== 秒传：上传成功 ======');
+      return;
+    }
+
+    // 需要上传，构造上传数据
+    container.data = fileChunkList.map(({ file }, index) => ({
+      chunk: file,
+      hash: `${container.hash}-${index}`,
+      percentage: uploadedList.includes(index) ? 100 : 0,
+      index
+    }));
+    uploadChunks(uploadedList, container);
+  }
+}
 
 fileElem.addEventListener('change', e => {
   const [file] = e.target.files;
@@ -29,14 +59,7 @@ fileElem.addEventListener('change', e => {
 
 uploadElem.addEventListener('click', async () => {
   console.log('upload button is clicked.');
-  const fileChunkList = splitFileChunk(container.file);
-  container.hash = await generateHash(fileChunkList);
-  const fileExt = container.file.name.slice(
-    container.file.name.lastIndexOf('.')
-  );
-  container.filename = `${container.hash}${fileExt}`;
-
-  handleUpload(container, fileChunkList);
+  handleUpload();
 });
 
 pauseElem.addEventListener('click', () => {
@@ -46,10 +69,10 @@ pauseElem.addEventListener('click', () => {
 });
 
 resumeElem.addEventListener('click', async () => {
-  console.log('result uploading file.');
+  console.log('resume uploading file.', container.filename, container.hash);
   const { uploadedList = [] } = await verifyUpload({
     filename: container.filename,
     fileHash: container.hash
   });
-  uploadChunks(uploadedList);
+  uploadChunks(uploadedList, container);
 });
