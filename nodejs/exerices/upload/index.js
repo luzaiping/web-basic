@@ -1,13 +1,16 @@
 const fileElem = document.querySelector('.file');
 const uploadElem = document.querySelector('.upload');
+const pauseElem = document.querySelector('.pause');
 
 const CHUNK_SIZE = 10 * 1024 * 1024;
 
 const container = {
-  file: null
+  file: null, // 上传文件，是个 File 类型
+  worker: null, // 计算文件 hash 的 worker
+  filename: null, // 文件上传后的文件名称 (hash + ext)
+  hash: null, // 文件 hash 值，由 worker 计算得到，用于标识文件唯一性，实现秒传功能所需
+  requestList: [] // 当前文件上传的 xhr 列表
 };
-
-container.worker = new Worker('/hash.js');
 
 /**
  * 计算各个 chunk file item 上传进度 及 总的上传进度
@@ -18,7 +21,7 @@ const createProgressHandler = (item, data) => {
   return e => {
     // eslint-disable-next-line no-param-reassign
     item.percentage = parseInt(String(e.loaded / e.total) * 100, 10) / 100;
-    console.log(`item${item.index}: ${item.percentage}\n`);
+    console.log(`===== item${item.index} percentage: ${item.percentage}\n`);
     const allLoaded = data
       .map(chunkItem => chunkItem.chunk.size * chunkItem.percentage) // 各个 chunk file 的乘以所上传的百分比，就得到各文件已上传的文件大小
       .reduce((accu, cur) => accu + cur, 0); // 将各文件已上传文件大小求和
@@ -41,7 +44,11 @@ const request = ({ url, method = 'post', data, headers = {}, onProgress }) => {
 
     xhr.send(data);
 
+    container.requestList.push(xhr);
+
     xhr.onload = e => {
+      const xhrIndex = container.requestList.findIndex(item => item === xhr);
+      container.requestList.splice(xhrIndex, 1);
       resolove({
         data: e.target.response
       });
@@ -167,4 +174,10 @@ fileElem.addEventListener('change', e => {
 uploadElem.addEventListener('click', () => {
   console.log('upload button is clicked.');
   handleUpload();
+});
+
+pauseElem.addEventListener('click', () => {
+  console.log('abort file upload');
+  container.requestList.forEach(xhr => xhr.abort());
+  container.requestList = [];
 });

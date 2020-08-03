@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-globals */
 self.importScripts('./spark-md5.min.js');
-console.log('========== hash =========');
 
 self.onmessage = e => {
   const { fileChunkList } = e.data;
