@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binary</title>
+  </head>
+
+  <body>
+    <div>
+      <p>下面利用 FileReader 实现图片预览功能：</p>
+      <input type="file" accept="image/*" class="previewImage" />
+      <img class="previewContainer" />
+    </div>
+    <p>
+      This example creates a typed array containing the ASCII codes for the
+      space character through the letter Z, then converts it to an object URL. A
+      link to open that object URL is created. Click the link to see the decoded
+      object URL.
+    </p>
+    <script type="module">
+      import { simpleDownload } from './blob.mjs';
+      simpleDownload();
+    </script>
+    <script type="module" src="filePreview.mjs"></script>
+  </body>
+</html>
