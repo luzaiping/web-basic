@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片灰度化</title>
+  </head>
+
+  <body>
+    <div>
+      <button id="grayscalebtn" disabled>灰度化</button>
+      <div>
+        选择文件：<input type="file" />
+      </div>
+      <div style="display: flex;">
+        <div style="flex: 50%;">
+          <p>预览容器</p>
+          <img id="previewContainer" width="230" height="230" style="border: 2px dashed blue;" />
+        </div>
+        <div style="flex: 50%;">
+          <p>Canvas容器</p>
+          <canvas id="canvas" width="230" height="230" style="border: 2px dashed blue;"></canvas>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="grayScale.mjs"></script>
+  </body>
+</html>
