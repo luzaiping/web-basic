@@ -1,0 +1,46 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue2 - 学习MVVM原理</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{ person.name }} -- {{ person.age}}</h2>
+    <h3>{{ person.fav }}</h3>
+    <h3>{{ msg }}</h3>
+    <div v-text="msg"></div>
+    <div v-text="person.name"></div>
+    <div v-html="htmlContent.text"></div>
+    <input type="text" v-model="msg" >
+    <button v-on:click="btnHandler">按钮</button>
+    <button @click="btnHandler">按钮@</button>
+  </div>
+
+  <script type="module">
+    import MVue from './MVue.mjs';
+
+    const vm = new MVue({
+      el: '#app',
+      data: {
+        person: {
+          name: '小马哥',
+          age: 18,
+          fav: '羽毛球'
+        },
+        msg: '学习MVVM原理',
+        htmlContent: {
+          text: '<h3>htmlStr内容</h3>'
+        }
+      },
+      methods: {
+        btnHandler() {
+          console.log('btn is clicked.', this);
+          this.person.name = '代理全局对象';
+        }
+      }
+    })
+    window.vm = vm;
+  </script>
+</body>
+</html>
