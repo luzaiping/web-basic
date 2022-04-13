@@ -17,4 +17,6 @@ function preSum(arr: Array<number>): Array<number> {
 }
 
 const tesingArr = [2, 4, 6, 8, 9, 12, 21, 33, 45];
-console.log('== preSumArr ==', preSum(tesingArr));
+const preSumArr = preSum(tesingArr);
+console.log('== preSumArr ==', preSumArr);
+console.log('== range ==', preSumArr[5] - preSumArr[2]);
