@@ -8,8 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            // "program": "${workspaceRoot}\\ES6\\promise\\simplestSimulation\\simulation.js"
-            "program": "${file}"
+            "program": "${workspaceRoot}\\compiler\\webpack-flow\\core\\index.js"
+            // "program": "${file}"
         }
     ]
 }
