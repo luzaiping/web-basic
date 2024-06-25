@@ -2,6 +2,8 @@
 // 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。
 // [2,7,11,15] -> { 2: 0, 7: 1, 11: 3, 15: 3 }
 // [3,2,4] -> { 3: 0, 2: 1, 4: 2}
+
+// 哈希解法
 export function twoSum(nums: number[], target: number) {
   const numsMap = {};
   for (let i = 0; i < nums.length; i++) {

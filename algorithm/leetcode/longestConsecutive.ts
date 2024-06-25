@@ -1,4 +1,6 @@
 // 最长序列
+
+// 哈希解法
 export const longestConsecutive = (nums: number[]) => {
   if (!Array.isArray(nums) || nums.length === 0) return 0;
 
