@@ -1,11 +1,11 @@
-/* class ListNode {
+class ListNode {
   value: number;
   next: ListNode | null;
   constructor(val?: number, next?: ListNode | null ) {
     this.value = val === undefined ? 0 : val;
     this.next = next === undefined ? null : next;
   }
-} */
+}
 
 function isPalindrome(head: ListNode | null) {
   if (head === null || head.next === null) return true;
@@ -32,7 +32,7 @@ function isPalindrome(head: ListNode | null) {
   let firstHalf: ListNode | null = head;
   let secondHalf: ListNode | null = prev; // prev 目前指向原链表的末尾
   while (firstHalf !== null && secondHalf !== null) {
-    if (firstHalf.val !== secondHalf.val) return false;
+    if (firstHalf.value !== secondHalf.value) return false;
 
     firstHalf = firstHalf.next;
     secondHalf = secondHalf.next;
@@ -52,12 +52,12 @@ function printList(head) {
 
 // 创建链表 1 -> 2 -> 2 -> 1
 let testHead = new ListNode(1);
-head.next = new ListNode(2);
-head.next.next = new ListNode(2);
-head.next.next.next = new ListNode(1);
+testHead.next = new ListNode(2);
+testHead.next.next = new ListNode(2);
+testHead.next.next.next = new ListNode(1);
 
 console.log("原始链表:");
-printList(head);
+printList(testHead);
 
-const result = isPalindrome(head);
+const result = isPalindrome(testHead);
 console.log("是否为回文链表:", result); // 输出 true
