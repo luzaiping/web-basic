@@ -20,7 +20,7 @@ function reverseList(head: ListNode | null): ListNode | null {
   return prev;
 }
 
-function printList(head: ListNode | null): void {
+function printReverseList(head: ListNode | null): void {
   const values: number[] = [];
   while (head !== null) {
       values.push(head.val);
@@ -37,10 +37,10 @@ head.next.next.next = new ListNode(4);
 head.next.next.next.next = new ListNode(5);
 
 console.log("原始链表:");
-printList(head);
+printReverseList(head);
 
 // 反转链表
 let reversedHead: ListNode | null = reverseList(head);
 
 console.log("反转后的链表:");
-printList(reversedHead);
+printReverseList(reversedHead);
