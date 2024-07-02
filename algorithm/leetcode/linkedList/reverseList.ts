@@ -1,12 +1,11 @@
-class ListNode {
-  val: number;
-  next: ListNode | null;
-  constructor(val?: number, next?: ListNode | null) {
-      this.val = val === undefined ? 0 : val;
-      this.next = next === undefined ? null : next;
-  }
-}
-
+/**
+ * The function `reverseList` reverses a singly linked list in TypeScript.
+ * @param {ListNode | null} head - The `head` parameter in the `reverseList` function represents the
+ * head node of a singly linked list. The function reverses the linked list by changing the direction
+ * of the pointers between nodes and returns the new head node of the reversed list.
+ * @returns The function `reverseList` is returning the head of the reversed linked list, which is
+ * stored in the `prev` variable.
+ */
 function reverseList(head: ListNode | null): ListNode | null {
   let prev: ListNode | null = null;
   let current: ListNode | null = head;

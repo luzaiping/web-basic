@@ -4,6 +4,17 @@
 // [3,2,4] -> { 3: 0, 2: 1, 4: 2}
 
 // 哈希解法
+/**
+ * The function `twoSum` takes an array of numbers and a target number, and returns an array of two
+ * indices that add up to the target.
+ * @param {number[]} nums - An array of numbers
+ * @param {number} target - The `target` parameter in the `twoSum` function represents the sum that we
+ * are trying to achieve by adding two numbers from the `nums` array. The function aims to find two
+ * numbers in the `nums` array that add up to the `target` value and return their indices in an
+ * @returns The function `twoSum` returns an array containing the indices of the two numbers in the
+ * `nums` array that add up to the `target` number. If no such pair is found, an empty array is
+ * returned.
+ */
 export function twoSum(nums: number[], target: number) {
   const numsMap = {};
   for (let i = 0; i < nums.length; i++) {

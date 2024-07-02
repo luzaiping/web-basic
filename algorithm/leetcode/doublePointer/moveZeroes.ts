@@ -4,6 +4,13 @@
 // 输出: [1,3,12,0,0]
 
 // 双指针
+/**
+ * The function `moveZeroes` moves all the non-zero elements in an array to the beginning while
+ * maintaining the original order.
+ * @param nums - The `moveZeroes` function takes an array `nums` as a parameter. This function moves
+ * all the zeroes in the array to the end while maintaining the relative order of the non-zero
+ * elements.
+ */
 function moveZeroes(nums) {
   let j = 0;
 

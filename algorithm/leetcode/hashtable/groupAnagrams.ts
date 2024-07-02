@@ -7,6 +7,14 @@
 
 // 哈希解法
 
+/**
+ * The function `groupAnagrams` takes a list of strings, groups them based on whether they are anagrams
+ * of each other, and returns the grouped anagrams as arrays of strings.
+ * @param {string[]} strList - An array of strings that you want to group into anagrams.
+ * @returns The function `groupAnagrams` returns an array of arrays, where each inner array contains a
+ * group of anagrams from the input `strList`. Each inner array represents a group of words that are
+ * anagrams of each other.
+ */
 function groupAnagrams(strList: string[]): string[][] {
   const map = new Map();
 

@@ -7,6 +7,16 @@
 
 // 双指针解法
 
+/**
+ * The function `maxArea` calculates the maximum area that can be formed by two vertical lines and the
+ * x-axis given an array of heights.
+ * @param {number[]} height - The `height` parameter in the `maxArea` function is an array of numbers
+ * representing the heights of the vertical lines. The function calculates the maximum area that can be
+ * formed between two vertical lines by selecting two lines that together with the x-axis forms a
+ * container. The width of the container is the
+ * @returns The function `maxArea` returns the maximum area of water that can be trapped between the
+ * vertical lines represented by the input array `height`.
+ */
 function maxArea(height: number[]): number {
   let left = 0; // 初始最左侧
   let right = height.length - 1; // 初始最右侧

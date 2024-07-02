@@ -1,6 +1,15 @@
 // 最长序列
 
 // 哈希解法
+/**
+ * The `longestConsecutive` function in TypeScript finds the length of the longest consecutive sequence
+ * of numbers in an array.
+ * @param {number[]} nums - The `nums` parameter in the `longestConsecutive` function is an array of
+ * numbers. The function calculates the length of the longest consecutive sequence of numbers in the
+ * array.
+ * @returns The function `longestConsecutive` returns the length of the longest consecutive sequence of
+ * numbers in the input array `nums`.
+ */
 export const longestConsecutive = (nums: number[]) => {
   if (!Array.isArray(nums) || nums.length === 0) return 0;
 

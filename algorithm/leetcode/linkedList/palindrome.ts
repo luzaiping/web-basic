@@ -1,12 +1,13 @@
-class ListNode {
-  value: number;
-  next: ListNode | null;
-  constructor(val?: number, next?: ListNode | null ) {
-    this.value = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
-  }
-}
-
+/**
+ * The function `isPalindrome` in TypeScript checks if a given linked list is a palindrome by using the
+ * fast-slow pointer technique to find the middle, reversing the second half of the list, and comparing
+ * the first half with the reversed second half.
+ * @param {ListNode | null} head - The `head` parameter in the `isPalindrome` function represents the
+ * head node of a singly linked list. The function is checking whether the linked list is a palindrome,
+ * meaning it reads the same forwards and backwards.
+ * @returns The function `isPalindrome` returns a boolean value - `true` if the linked list is a
+ * palindrome, and `false` if it is not.
+ */
 function isPalindrome(head: ListNode | null) {
   if (head === null || head.next === null) return true;
 
@@ -32,7 +33,7 @@ function isPalindrome(head: ListNode | null) {
   let firstHalf: ListNode | null = head;
   let secondHalf: ListNode | null = prev; // prev 目前指向原链表的末尾
   while (firstHalf !== null && secondHalf !== null) {
-    if (firstHalf.value !== secondHalf.value) return false;
+    if (firstHalf.val !== secondHalf.val) return false;
 
     firstHalf = firstHalf.next;
     secondHalf = secondHalf.next;

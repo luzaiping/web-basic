@@ -13,10 +13,21 @@ a = c
 
 // 1. 首先判断是否是链表是否有环
 // 2. 如果有环，将其中一个重置到链表的头部，然后按相同速度移动，相交点就是入环的第一个节点
+
+/**
+ * The function `detectCycle` in TypeScript detects and returns the first node of a cycle in a linked
+ * list using the Floyd's Tortoise and Hare algorithm.
+ * @param {ListNode | null} head - The `head` parameter in the `detectCycle` function represents the
+ * starting node of a linked list. The function is designed to detect and return the node where a cycle
+ * begins in the linked list if there is a cycle present. If there is no cycle in the linked list, the
+ * function will return
+ * @returns The function `detectCycle` returns the first node of the cycle in a linked list if a cycle
+ * is detected, otherwise it returns `null`.
+ */
 function detectCycle(head: ListNode | null): ListNode | null {
   if (head === null || head.next === null) return null; // 没有节点或者只有一个节点，返回 null
 
-  // 1. 判断是否有环：使用快慢指针法
+  // 1. 判断是否有环：使用快慢指针法 (弗洛伊德龟兔算法)
   let fast: ListNode | null = head;
   let slow: ListNode | null = head;
 
