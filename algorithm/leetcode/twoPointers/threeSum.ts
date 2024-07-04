@@ -35,7 +35,7 @@ function threeSum(nums: number[]): number[][] {
 
         // move the both pointers towards the center
         left++;
-        right++;
+        right--;
       }
       if (sum < 0) {
         // If the sum is less than zero, move the left pointer to the right to increase the sum
