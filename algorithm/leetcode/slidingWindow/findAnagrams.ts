@@ -1,5 +1,7 @@
+const letterLength = 26;
+
 function matches(arr1: number[], arr2: number[]): boolean {
-  for (let i = 0; i < 26; i++) {
+  for (let i = 0; i < letterLength; i++) {
     if (arr1[i] !== arr2[i]) return false;
   }
   return true;
@@ -12,8 +14,8 @@ function findAnagrams(s: string, p: string): number[] {
   if (s.length < p.length) return result;
 
   // Create frequency counters for p and for the current window in s
-  const pCount = new Array(26).fill(0);
-  const windowCount = new Array(26).fill(0);
+  const pCount = new Array(letterLength).fill(0);
+  const windowCount = new Array(letterLength).fill(0);
 
   const aChatCodeIndex = 'a'.charCodeAt(0);
 

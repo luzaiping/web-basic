@@ -10,7 +10,7 @@ function lengthOfLongestSubstring(str: string): number {
   for (let end = 0; end < str.length; end++) {
     const char = str[end];
 
-    // If the character is aleady in the map, move the start to the right of the same character last found.
+    // If the character is already in the map, move the start to the right of the same character last found.
     if (map.has(char)) {
       // Move start to the the maximum of current start and the next index of previous occurrence of the current character.
       start = Math.max(map.get(char)! + 1, start);
