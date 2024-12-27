@@ -16,7 +16,7 @@
  * returned.
  */
 export function twoSum(nums: number[], target: number) {
-  const numsMap = {};
+  const numsMap: { [key: number]: number } = {};
   for (let i = 0; i < nums.length; i++) {
     const diff = target - nums[i];
 
@@ -24,10 +24,13 @@ export function twoSum(nums: number[], target: number) {
     // if (diffIndex > -1 && diffIndex !== i) {
     if (diffIndex > -1) {
       // 找到目标元素，直接返回对应的索引
-      return [i, diffIndex]
+      return [i, diffIndex];
     }
     // 如果没找到，将当前数作为 key，索引作为 value，存入 map 中
     numsMap[nums[i]] = i;
   }
   return [];
 }
+
+const nums = [4, 2, 7, 11, 8, 3];
+console.log(twoSum(nums, 9));
